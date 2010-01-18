@@ -97,6 +97,17 @@ def getsounds_dif_linear_nonorm(m1,m2,x1,x2,h,tau11,w11,p,D,l0,alpha_side,sr):
     beta = EI*n2 + T*n #(m,1)
     alpha = (d1-d3*n)/2 # nonlinear
     omega = np.sqrt(np.abs(beta - alpha**2))
+    
+    #correct partial
+    mode_corr = np.sum((omega/2/np.pi) <= sr/2)
+    beta = beta[:mode_corr]
+    alpha = alpha[:mode_corr]
+    omega = omega[:mode_corr]
+    mu = mu[:mode_corr]
+    mu2 = mu2[:mode_corr]
+    K = K[:mode_corr]
+    
+    
     N = l0*l2/4
     c0 = -np.exp(-2*alpha*Ts)
     c1 = 2*np.exp(-alpha*Ts)*np.cos(omega*Ts)
@@ -164,13 +175,16 @@ def getsounds_imp_linear_nonorm(m1,m2,x1,x2,h,tau11,w11,p,D,l0,alpha_side,sr):
     beta = EI*n2 + T*n #(m,1)
     alpha = (d1-d3*n)/2 # nonlinear
     omega = np.sqrt(np.abs(beta - alpha**2))
+    #correct partials
+    mode_corr = np.sum((omega/2/np.pi) <= sr/2) #convert omega to hz
+        
     N = l0*l2/4
-    yi = h*np.sin(mu*np.pi*x1)*np.sin(mu2*np.pi*x2)/omega
+    yi = h * np.sin(mu[:mode_corr] * np.pi * x1) * np.sin(mu2[:mode_corr] * np.pi * x2) / omega[:mode_corr]
 
 
     time_steps = np.linspace(0,dur,dur)/sr
-    y = np.exp(-alpha[:,None]*time_steps[None,:])*np.sin(omega[:,None]*time_steps[None,:]) 
-    y = yi[:,None]*y #(m,) * (m,dur)
-    y = np.sum(y*K[:,None]/N,axis=0) #impulse response itself
+    y = np.exp(-alpha[:mode_corr,None] * time_steps[None,:]) * np.sin(omega[:mode_corr,None] * time_steps[None,:]) 
+    y = yi[:,None] * y #(m,) * (m,dur)
+    y = np.sum(y * K[:mode_corr,None] / N,axis=0) #impulse response itself
 
     return y

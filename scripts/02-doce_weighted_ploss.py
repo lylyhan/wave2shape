@@ -37,9 +37,9 @@ def set(args=None):
     
     # set the plan (factor : modalities) #how to set modalities that only apply to certain feature again?
     experiment.add_plan('plan',
-                       feature_type = ['cqt'],
+                       feature_type = ['vqt'],
                        J = [8],
-                       Q = [16],
+                       Q = [24],
                        loss_type = ["weighted_p","ploss"],
                        param = ['alpha','beta_alpha'],
                        activation_type = ['linear'],
@@ -69,6 +69,7 @@ def step(setting, experiment):
     is_multitask = experiment.is_multitask
     logscale = experiment.logscale
     n_trials = experiment.n_trials
+    weighting = "small_weighting"
     
     if activation == "sigmoid":
         lr = 0.001
@@ -86,6 +87,7 @@ def step(setting, experiment):
                                                         is_multitask=is_multitask,
                                                         activation=activation,
                                                         loss=loss,
+                                                        weighting=weighting,
                                                         batch_size=batchsize,
                                                         n_epoch=n_epoch,
                                                         lr=lr,

@@ -29,12 +29,31 @@ def welford(feature_path):
     compute running variance of a collection of feature vectors
     """
     count = 1
+    files = [os.listdir(os.path.join(feature_path,i)) for i in os.listdir(feature_path) if os.path.isdir(os.path.join(feature_path,i))]
+    feat_files = sum(files,[])
+    mean = np.load(os.path.join(feature_path, feat_files[0].split("_")[0], feat_files[0])).squeeze()
+    var = np.zeros(mean.shape)
+    existingAggregate = (count, mean, var)
+    for i in range(1,len(feat_files)):
+        newValue = np.load(os.path.join(feature_path, feat_files[i].split("_")[0],
+                                        feat_files[i])).squeeze()
+        existingAggregate = update(existingAggregate, newValue)
+        mean_running,variance_running, sampvar_running = finalize(existingAggregate)
+    return mean_running,variance_running,sampvar_running
+
+def welford_stand(feature_path,mu,std):
+    """
+    compute running variance of a collection of feature vectors while performing standardization
+    """
+    count = 1
     feat_files = os.listdir(feature_path)
     mean = np.load(os.path.join(feature_path,feat_files[0])).squeeze()
+    mean = (mean - mu)/std
     var = np.zeros(mean.shape)
     existingAggregate = (count, mean, var)
     for i in range(1,len(feat_files)):
         newValue = np.load(os.path.join(feature_path,feat_files[i])).squeeze()
+        newValue = (newValue - mu) / std
         existingAggregate = update(existingAggregate, newValue)
         mean_running,variance_running, sampvar_running = finalize(existingAggregate)
     return mean_running,variance_running,sampvar_running

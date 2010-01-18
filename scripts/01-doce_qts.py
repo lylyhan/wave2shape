@@ -38,7 +38,7 @@ def set(args=None):
     # set the plan (factor : modalities) #how to set modalities that only apply to certain feature again?
     experiment.add_plan('plan',
                        feature_type = ['cqt','hcqt','vqt'],
-                       J = [6,8],
+                       J = [8,10],
                        Q = [8,16,24],
                        #denselayer = ['dense','deep_centroid'],  #omegaonly
                        activation_type = ['linear'],                    

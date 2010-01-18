@@ -10,21 +10,26 @@ audio_path = "/home/han/data/drum_data/"
 
 
 @pescador.streamable
-def feature_sampler(ids, fold, params_normalized, fold_dist, idx, audio_path, J, Q, ftype, loss, param, eps):
+def feature_sampler(ids, fold, params_normalized, fold_dist, weight_type, idx, audio_path, J, Q, ftype, loss, param, eps, pitchmode):
     """
     output a {input, ground truth} pair for the designated audio sample
     """
     i = idx
     y = params_normalized[i,:] #ground truth
+   
     #load weights here!
     if fold_dist is None:
         weights = np.ones((5,)) #does not affect the following computation
     else:
-        #if param == "beta_alpha":
-        #    param_idx = [0,1,2,3,5]
-        #else:
-        #    param_idx = [0,1,2,3,4]
-        weights = np.log1p(1/fold_dist[i,:])
+        if weight_type == "nn_limit":
+            weights = fold_dist[i,:] #logscaling the weights will largely diminish the penalization
+        elif weight_type == "grad": #JTJ
+            weights = np.sqrt(np.diagonal(fold_dist[i,:,:]))
+        elif weight_type == "riemann": #volumetric sample weight
+            M = fold_dist[i,:,:]
+            w,v = np.eig(M)
+            weights = np.sqrt(np.prod(w))
+            
     
     fullpath = os.path.join(audio_path,fold,str(ids[i])+"_sound.wav") 
     x,sr = sf.read(fullpath)
@@ -45,15 +50,24 @@ def feature_sampler(ids, fold, params_normalized, fold_dist, idx, audio_path, J,
     if eps:
         Sy = np.log1p(Sy/eps)
     #print(Sy.shape)
+    if pitchmode == "wpitch":
+        idrange = 0
+    else:
+        idrange = 1
     if loss == "weighted_p":
-        while True:
-            yield {'input': Sy,'y': y,"weights":weights[:,None]} #third key is supposed to be the sample weight!!
+        if weight_type == "riemann":
+            while True:
+                yield {'input': Sy,'y': y[idrange::],"weights":weights[idrange::, None],
+                      "quadratic":M} #is the fourth key allowed??
+        else:
+            while True:
+                yield {'input': Sy,'y': y[idrange::],"weights":weights[idrange::, None]} #third key is supposed to be the sample weight!!
     else:
         while True:
-            yield {'input': Sy,'y': y}
+            yield {'input': Sy,'y': y[idrange::]}
 
 def data_generator(ids,fold,params_normalized,feature_type,audio_path, batch_size, idx, active_streamers,
-                        rate,loss, param, eps,random_state=12345678):
+                        rate,loss, weight_setup, param, eps, pitchmode,random_state=12345678):
     """
     use streamers to output a batch of {input groundtruth} pairs. 
     """
@@ -61,11 +75,32 @@ def data_generator(ids,fold,params_normalized,feature_type,audio_path, batch_siz
     J = feature_type["J"]
     Q = feature_type["Q"]
     #load the weights npy file
-    fold_dist = np.load(os.path.join(audio_path, fold + "_nbr_dist.npy"))
+    if loss == "ploss":
+        fold_dist = None
+        weight_type = None
+    else:
+        if weight_setup is None:
+            raise NameError('weighted_ploss has to have weight_setup')
+        else:
+            weight_type = weight_setup["type"]
+            weight_nnbr = weight_setup["n_nbr"]
+            weight_n = weight_setup["n"]
+            if weight_type == "nn_limit":
+                fold_dist = np.load(os.path.join(audio_path, fold + '_nbr_dist_nnbr'+str(weight_nnbr) + '_n' + str(weight_n) + 'jtfsavgf_nnadvanced.npy'))
+                if param == "alpha":
+                    fold_dist = fold_dist[:,:-1]
+                else:
+                    fold_dist = fold_dist[:,[0,1,2,3,5]]
+            elif weight_type == "grad":
+                fold_dist = np.load(os.path.join(audio_path, fold + '_grad_jtfs.npy'))
+            elif weight_type == "riemann":
+                fold_dist = np.load(os.path.join(audio_path, fold + '_grad_jtfs.npy'))
+            
     streams = [feature_sampler(ids,
                                fold, 
                                params_normalized,
                                fold_dist,
+                               weight_type,
                                i,
                                audio_path,
                                J,
@@ -73,7 +108,8 @@ def data_generator(ids,fold,params_normalized,feature_type,audio_path, batch_siz
                                ftype,
                                loss,
                                param,
-                               eps) for i in idx]
+                               eps,
+                               pitchmode) for i in idx]
     # Randomly shuffle the eds
     random.shuffle(streams)
     mux = pescador.StochasticMux(streams, active_streamers, rate=rate, random_state=random_state)
@@ -94,7 +130,7 @@ def data_generator_offline(features,gt,batch_size,idx,active_streamers,rate,rand
 
 #for loading premade scattering features (one file per example)
 @pescador.streamable
-def feature_sampler_offsep(fold,params_normalized,idx,feature_path,J,Q,ftype,mean,var,eps):
+def feature_sampler_offsep(ids,fold,params_normalized,idx,feature_path,J,Q,ftype,eps):
     """
     output a {input, ground truth} pair for the designated audio sample
     load each feature from disk
@@ -102,10 +138,9 @@ def feature_sampler_offsep(fold,params_normalized,idx,feature_path,J,Q,ftype,mea
     logscale
     """
     i = idx
-
     y = params_normalized[i,:] #ground truth
     pkl_path = "_".join([ftype,"fold-"+fold,"J-" + str(J).zfill(2),"Q-" + str(Q).zfill(2)])
-    pkl_name = "_".join([str(i),ftype,"fold-"+fold,"J-" + str(J).zfill(2),"Q-" + str(Q).zfill(2)+".npy"])
+    pkl_name = "_".join([str(ids[i]),ftype,"fold-"+fold,"J-" + str(J).zfill(2),"Q-" + str(Q).zfill(2)+".npy"])
     fullpath = os.path.join(feature_path,ftype,pkl_path,pkl_name) 
     Sy,_ = np.load(fullpath,allow_pickle=True) #scale it per channel!!??
     #standardize along each path??
@@ -119,7 +154,7 @@ def feature_sampler_offsep(fold,params_normalized,idx,feature_path,J,Q,ftype,mea
     while True:
         yield {'input': Sy,'y': y} #temporarily here to see if learn one task is better
 
-def data_generator_offsep(fold,params_normalized,feature_type, mean,var,feature_path, batch_size, idx, active_streamers,
+def data_generator_offsep(ids,fold,params_normalized,feature_type, feature_path, batch_size, idx, active_streamers,
                         rate, eps,random_state=12345678):
     """
     use streamers to output a batch of {input groundtruth} pairs. 
@@ -127,7 +162,7 @@ def data_generator_offsep(fold,params_normalized,feature_type, mean,var,feature_
     ftype = feature_type["type"]
     J = feature_type["J"]
     Q = feature_type["Q"]
-    streams = [feature_sampler_offsep(fold,params_normalized,i,feature_path,J,Q,ftype,mean,var,eps) for i in idx]
+    streams = [feature_sampler_offsep(ids,fold,params_normalized,i,feature_path,J,Q,ftype,eps) for i in idx]
     # Randomly shuffle the eds
     random.shuffle(streams)
     mux = pescador.StochasticMux(streams, active_streamers, rate=rate, random_state=random_state)

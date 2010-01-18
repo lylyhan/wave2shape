@@ -38,7 +38,7 @@ if not os.path.exists(path_out):
     os.makedirs(path_out)       
 for i in range(n_samp_val):
     omega,tau,p,D,alpha = val_params[i,1:-1]
-    y = ftm.getsounds_dif_linear_nonorm(mode,mode,x1,x2,h,tau,omega,p,D,l0,alpha,sr)
+    y = ftm.getsounds_imp_linear_nonorm(mode,mode,x1,x2,h,tau,omega,p,D,l0,alpha,sr)
     y = y/ max(y)
     filename = os.path.join(path_out,str(val_params[i,0])+"_sound.wav")
     sf.write(filename, y, sr)
@@ -52,7 +52,7 @@ if not os.path.exists(path_out):
     os.makedirs(path_out)
 for i in range(n_samp_test):
     omega,tau,p,D,alpha = test_params[i,1:-1]
-    y = ftm.getsounds_dif_linear_nonorm(mode,mode,x1,x2,h,tau,omega,p,D,l0,alpha,sr)
+    y = ftm.getsounds_imp_linear_nonorm(mode,mode,x1,x2,h,tau,omega,p,D,l0,alpha,sr)
     y = y/ max(y)
     filename = os.path.join(path_out,str(test_params[i,0])+"_sound.wav")
     sf.write(filename, y, sr)
@@ -65,7 +65,7 @@ if not os.path.exists(path_out):
     os.makedirs(path_out)
 for i in range(n_samp_train):
     omega,tau,p,D,alpha = train_params[i,1:-1]
-    y = ftm.getsounds_dif_linear_nonorm(mode,mode,x1,x2,h,tau,omega,p,D,l0,alpha,sr)
+    y = ftm.getsounds_imp_linear_nonorm(mode,mode,x1,x2,h,tau,omega,p,D,l0,alpha,sr)
     y = y/ max(y)
     filename = os.path.join(path_out,str(train_params[i,0])+"_sound.wav")
     sf.write(filename, y, sr)

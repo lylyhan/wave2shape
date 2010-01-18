@@ -17,7 +17,7 @@ def mean_min(data): # average over the minimal values of each row
 def set(args=None):
     # define the experiment
     experiment = doce.Experiment(
-    name = 'wav2shape_multitask',
+    name = 'wav2shape_baseline',
     purpose = 'multitask regression experiments',
     author = 'han han',
     address = 'han.han@ls2n.fr',
@@ -33,16 +33,24 @@ def set(args=None):
     experiment.is_multitask = True
     experiment.is_normalize = True
     experiment.logscale = 1e-3
-    experiment.n_trials = 10
+    experiment.n_trials = 8
     
     # set the plan (factor : modalities) #how to set modalities that only apply to certain feature again?
-    experiment.add_plan('plan',
-                       feature_type = ['cqt','scattering_o1','scattering_o2'],
-                       J = [8,10,12],
+    experiment.add_plan('order 1 plan',
+                       feature_type = ['cqt','scattering_o1'],
+                       J = [8,10],
                        Q = [1,16],
                        #denselayer = ['dense','deep_centroid'],  #omegaonly
-                       activation_type = ['linear','sigmoid'],                    
+                       activation_type = ['linear'],                    
     )
+    experiment.add_plan('order 2 plan',
+                       feature_type = ['scattering_o2'],
+                       J = [14],
+                       Q = [1,16],
+                       #denselayer = ['dense','deep_centroid'],  #omegaonly
+                       activation_type = ['linear'],                    
+    )
+    
     
     # set the metrics
     experiment.set_metrics(
@@ -76,16 +84,20 @@ def step(setting, experiment):
     validation_loss = []
     training_loss = []
     for trial in range(n_trials):
+        
         val_loss,train_loss = train.run_train({"type":ftype,"J":J,"Q":Q},
                                                         trial,
                                                         logscale=logscale,
                                                         is_normalize=is_normalize,
                                                         is_multitask=is_multitask,
                                                         activation=activation,
+                                                        loss="ploss",
+                                                        weight_setup=None,
                                                         batch_size=batchsize,
                                                         n_epoch=n_epoch,
                                                         lr=lr,
-                                                        steps_per_epoch=steps_per_epoch)
+                                                        steps_per_epoch=steps_per_epoch,
+                                                        predict_mode=False)
         training_loss.append(train_loss)
         validation_loss.append(val_loss)
         

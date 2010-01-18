@@ -82,7 +82,7 @@ def create_model_conv1d(J,Q,S,activation,is_multitask,lr):
     return model
 
 
-def create_model_conv2d(bins_per_oct,S,activation,is_multitask,lr):
+def create_model_conv2d(bins_per_oct,S,activation,is_multitask,lr,outdim):
     momentum=0.5
     if len(S.shape)==4:
         naudio,nfreq,ntime,nchan_in = S.shape
@@ -135,7 +135,7 @@ def create_model_conv2d(bins_per_oct,S,activation,is_multitask,lr):
     x = Activation("relu")(x)
   
     if is_multitask:
-        n_out = 5
+        n_out = outdim
     else:
         n_out = 1
 
@@ -148,6 +148,7 @@ def create_model_conv2d(bins_per_oct,S,activation,is_multitask,lr):
     model.compile(loss=loss.mse_loss, optimizer=opt, metrics=[loss.mse_loss])
     #model.compile(loss='mse', optimizer=opt, metrics=['mse'])
     return model
+
 
 
 

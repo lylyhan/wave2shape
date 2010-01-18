@@ -143,11 +143,13 @@ def run_train(feature_type,
                 is_multitask=True,
                 activation="linear",
                 loss="ploss",
+                weight_setup=None,
                 batch_size=64,
                 n_epoch=30,
                 lr=0.001,
                 steps_per_epoch=50,
-                predict_mode=False):
+                predict_mode=False,
+                pitchmode="wpitch"):
     """
     Inputs:
     feature_type: {"type":str,
@@ -172,6 +174,18 @@ def run_train(feature_type,
     else:
         param = "alpha"
     
+    if weight_setup:
+        weight_type = weight_setup["type"]
+        nnbr = weight_setup["n_nbr"]
+    else:
+        weight_type = ""
+        nnbr = ""
+        
+    if pitchmode == "wpitch":
+        outdim = 5
+    else:
+        outdim = 4
+        
     print("loading ground truth")
     #load, log-scale and normalize ground truth
     y_train,train_ids = load_gt("train", param)
@@ -184,9 +198,9 @@ def run_train(feature_type,
 
    
     #designate name
-    exp_type="_".join(["multitask"+str(is_multitask), activation, "log"+str(logscale)])
+    #exp_type="_".join(["multitask"+str(is_multitask), activation, "log"+str(logscale)])
     
-    #exp_type="_".join(["multitask"+str(is_multitask), loss, param, activation, "log"+str(logscale)])
+    exp_type="_".join(["multitask"+str(is_multitask), loss, param, pitchmode,weight_type, "nnbr"+str(nnbr), activation, "log"+str(logscale)])
     exp_name = "_".join([ftype,"J"+str(J),"Q"+str(Q),"bs"+str(batch_size),exp_type])
     
     #customize exp name but keep the linear activation
@@ -196,17 +210,15 @@ def run_train(feature_type,
     print("running ",exp_name)
     
     if "scattering" in ftype:
-        if "Q16" in exp_name and "scattering_o2" in exp_name:
+        if "scattering_o2" in exp_name:
             #load mean and variance
-            mean,var = load_scstats(ftype,J,Q,"train")
+            #mean,var = load_scstats(ftype,J,Q,"train")
             #print(mean,var)
             train_idx = np.arange(0,y_train.shape[0],1)
-            train_batches = data_generator.data_generator_offsep(
+            train_batches = data_generator.data_generator_offsep(train_ids,
                                                         "train",
                                                         y_train_normalized, 
                                                         feature_type,
-                                                        mean,
-                                                        var,
                                                         pkl_dir,
                                                         batch_size=batch_size, 
                                                         idx=train_idx,
@@ -216,12 +228,10 @@ def run_train(feature_type,
                                                          eps=logscale)
 
             test_idx = np.arange(0,y_test.shape[0],1) #how long should this be?? #streamers to open
-            test_batches = data_generator.data_generator_offsep(
+            test_batches = data_generator.data_generator_offsep(test_ids,
                                                            "test",
                                                         y_test_normalized, 
                                                         feature_type,
-                                                        mean,
-                                                        var,
                                                         pkl_dir,
                                                         batch_size=batch_size, 
                                                         idx=test_idx,
@@ -230,12 +240,10 @@ def run_train(feature_type,
                                                         random_state=random_state,
                                                         eps=logscale)
             val_idx = np.arange(0,y_val.shape[0],1) #how long should this be?? #streamers to open
-            val_batches = data_generator.data_generator_offsep(
+            val_batches = data_generator.data_generator_offsep(val_ids,
                                                          "val",
                                                         y_val_normalized, 
                                                         feature_type,
-                                                        mean,
-                                                        var,
                                                         pkl_dir,
                                                         batch_size=batch_size, 
                                                         idx=val_idx,
@@ -298,8 +306,10 @@ def run_train(feature_type,
                                                     rate=64,
                                                     random_state=random_state,
                                                      loss=loss,
+                                                     weight_setup=weight_setup,
                                                      param=param,
-                                                     eps=logscale)
+                                                     eps=logscale,
+                                                     pitchmode=pitchmode)
 
         test_idx = np.arange(0,y_test.shape[0],1) #how long should this be?? #streamers to open
         test_batches = data_generator.data_generator(test_ids,
@@ -313,8 +323,10 @@ def run_train(feature_type,
                                                     rate=64,
                                                     random_state=random_state,
                                                     loss=loss,
+                                                     weight_setup=weight_setup,
                                                      param=param,
-                                                    eps=logscale)
+                                                    eps=logscale,
+                                                    pitchmode=pitchmode)
         val_idx = np.arange(0,y_val.shape[0],1) #how long should this be?? #streamers to open
         val_batches = data_generator.data_generator(val_ids,
                                                      "val",
@@ -327,16 +339,18 @@ def run_train(feature_type,
                                                     rate=64,
                                                     random_state=random_state,
                                                     loss=loss,
+                                                    weight_setup=weight_setup,
                                                     param=param,
-                                                   eps=logscale)
+                                                   eps=logscale,
+                                                   pitchmode=pitchmode)
 
 
     print("making models")
     #make model
     if "scattering" in ftype:
-        if "Q16" in exp_name and "scattering_o2" in exp_name:
+        if "scattering_o2" in exp_name:
             print(pkl_dir)
-            example_str = data_generator.feature_sampler_offsep("train",y_train_normalized,0,pkl_dir,J,Q,ftype,mean,var,logscale)
+            example_str = data_generator.feature_sampler_offsep(train_ids,"train",y_train_normalized,0,pkl_dir,J,Q,ftype,logscale)
             for samp in example_str.iterate():
                 ex_input = samp["input"]
                 break
@@ -345,11 +359,16 @@ def run_train(feature_type,
             model = cnn.create_model_conv1d(J,Q,Sy_train_scaled[0,:,:][None,:,:],activation,is_multitask=is_multitask,lr=lr)
     else:
         #create an instance of this input feature S 
-        example_str = data_generator.feature_sampler(train_ids,"train",y_train_normalized,None,0,audio_path,J,Q,ftype,loss,param,logscale)
+        if weight_setup:
+            weight_type = weight_setup["type"]
+        else:
+            weight_type = None
+            
+        example_str = data_generator.feature_sampler(train_ids,"train",y_train_normalized,None,weight_type,0,audio_path,J,Q,ftype,loss,param,logscale,pitchmode)
         for samp in example_str.iterate():
             ex_input = samp["input"]
             break
-        model = cnn.create_model_conv2d(bins_per_oct=Q,S=ex_input[None,:],activation=activation,is_multitask=is_multitask,lr=lr)
+        model = cnn.create_model_conv2d(bins_per_oct=Q,S=ex_input[None,:],activation=activation,is_multitask=is_multitask,lr=lr,outdim=outdim)
 
 
     early_stopping = EarlyStopping(monitor='val_loss', patience=4)
@@ -395,12 +414,13 @@ def run_train(feature_type,
     
     #optionally output prediction results
     if predict_mode:
-        if ftype == "cqt":
-            feat_cqt = np.load(os.path.join("/home/han/data/drum_data/han2022features-pkl/","CQT_J8_Q16_testset_features.npy"))
+        if ftype in ["cqt","vqt"]:
+            feat_cqt = np.load(os.path.join("/home/han/data/drum_data/han2022features-pkl/", ftype.upper() +"_J10_Q12_testset_features.npy"))
             if logscale:
                 feat_cqt = np.log1p(feat_cqt/logscale)
             y_preds = model.predict(feat_cqt,verbose=1) 
-            y_gt = y_test_normalized
+            y_gt = y_test_normalized[:, -outdim::]
+            print(y_preds.shape,y_gt.shape)
         elif "scattering" in ftype:
             if Q == 16:
                 feat_path = os.path.join("/home/han/data/drum_data/han2022features-pkl/",ftype,
@@ -442,7 +462,6 @@ def run_train(feature_type,
     K.clear_session()
     
     del model
-    #del Sy_train_scaled,Sy_test_scaled,Sy_val_scaled
     gc.collect()
     
     return validation_loss,training_loss
