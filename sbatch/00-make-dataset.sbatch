@@ -11,7 +11,6 @@
 module purge
 module load cuda/9.0.176
 
-# The first argument is the name of the recording unit.
-# The second argument is the name of the trial.
+
 cd /home/hh2263/wave2shape/src/
 python make_dataset.py
