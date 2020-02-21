@@ -1,0 +1,4 @@
+  File "/home/hh2263/wave2shape/src/make_dataset.py", line 56
+    if not os.path.exists(path_out):
+                                   ^
+TabError: inconsistent use of tabs and spaces in indentation
