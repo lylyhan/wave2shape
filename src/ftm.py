@@ -68,7 +68,7 @@ def getsounds_imp(m1,m2,w11,tau11,p,D,alpha,sr):
             #print(get_impf(i+1,1,300),getf(i+1,1,300))
     #sr = 44100
     #print(omega,sigma,k)
-    dur = round(sr)
+    dur = 2**16
 
     y = []
     for t in range(dur):
@@ -97,7 +97,7 @@ def getsounds_dif(m1,m2,w11,tau11,p,D,alpha,sr):
 
 
 
-    dur = round(sr)
+    dur = 2**16
     y_1 = np.zeros((m1,m2))
     y_2 = np.zeros((m1,m2))
     x_1 = 0.0
