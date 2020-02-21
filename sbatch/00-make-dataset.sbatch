@@ -3,13 +3,15 @@
 #BATCH --job-name=00-dataset
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=1
-#SBATCH --cpus-per-task=1
+#SBATCH --cpus-per-task=4
 #SBATCH --time=10:00:00
 #SBATCH --mem=24GB
 #SBATCH --output=../slurm/slurm_dataset.out
 
 module purge
+module load cuda/9.0.176
 
 # The first argument is the name of the recording unit.
 # The second argument is the name of the trial.
-python ../src/make_dataset.py
+cd /home/hh2263/wave2shape/src/
+python make_dataset.py
