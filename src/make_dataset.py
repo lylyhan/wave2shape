@@ -21,7 +21,7 @@ n_samp_train,n_param_val = train_params.shape
 
 mode = 10
 sr = 44100
-
+"""
 for i in range(n_samp_val):
     omega,tau,p,D,alpha = val_params[i,1:-1]
     y = ftm.getsounds_imp(mode,mode,omega,tau,p,D,alpha,sr)
@@ -47,16 +47,17 @@ for i in range(n_samp_test):
     
     
 print("finished test set!!")
-
+"""
 for i in range(n_samp_train):
     omega,tau,p,D,alpha = train_params[i,1:-1]
-    y = ftm.getsounds_imp(mode,mode,omega,tau,p,D,alpha,sr)
-    y = y/ max(y)
-    path_out = "/scratch/hh2263/drum_data/train/"
-    if not os.path.exists(path_out):
-        os.mkdir(path_out)
-    filename = os.path.join(path_out,str(train_params[i,0])+"_sound.wav")
-    sf.write(filename, y, sr)
+    if not os.path.exists("/scratch/hh2263/drum_data/train/"+str(train_params[i,0])+"_sound.wav"):
+        y = ftm.getsounds_imp(mode,mode,omega,tau,p,D,alpha,sr)
+        y = y/ max(y)
+        path_out = "/scratch/hh2263/drum_data/train/"
+        if not os.path.exists(path_out):
+            os.mkdir(path_out)
+        filename = os.path.join(path_out,str(train_params[i,0])+"_sound.wav")
+        sf.write(filename, y, sr)
     
 
 print("finished train set!!")

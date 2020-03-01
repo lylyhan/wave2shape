@@ -3,10 +3,10 @@
 #BATCH --job-name=00-dataset
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=1
-#SBATCH --cpus-per-task=4
-#SBATCH --time=10:00:00
+#SBATCH --cpus-per-task=10
+#SBATCH --time=20:00:00
 #SBATCH --mem=24GB
-#SBATCH --gres=gpu:1
+
 #SBATCH --output=/home/hh2263/wave2shape/slurm/slurm_dataset.out
 
 module purge
