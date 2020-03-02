@@ -16,7 +16,7 @@ import pescador
 import random
 import os
 import librosa
-
+import sys
 
 def getsc_new(y,J,Q_num,order):
     """
@@ -27,10 +27,10 @@ def getsc_new(y,J,Q_num,order):
     Sy = scattering(torch.Tensor(y))
     return Sy
 
-df_train = pd.read_csv("./train_param.csv")
-df_test = pd.read_csv("./test_param.csv")
-df_val = pd.read_csv("./val_param.csv")
-df_full = pd.read_csv("./diffshapes_param.csv")
+df_train = pd.read_csv("../notebooks/train_param.csv")
+df_test = pd.read_csv("../notebooks/test_param.csv")
+df_val = pd.read_csv("../notebooks/val_param.csv")
+df_full = pd.read_csv("../notebooks/diffshapes_param.csv")
 
 
 # normalization of the physical parameters
@@ -85,7 +85,7 @@ def data_generator(df, params_normalized, path_to_folder, J, Q, order, batch_siz
 epochs=12
 batch_size=32
 random_state=12345678
-active_streamers=1024
+active_streamers=64
 path_to_train = "/scratch/hh2263/drum_data/train/"
 path_to_test = "/scratch/hh2263/drum_data/test/"
 J = 8
@@ -146,7 +146,7 @@ model_filepath = os.path.join(output_dir, 'model.h5')
 log_filepath = os.path.join(output_dir, 'train_log.csv')
 
 callbacks = []
-callbacks.append(EarlyStopping(patience=patience))
+callbacks.append(EarlyStopping(patience=10))
 callbacks.append(ModelCheckpoint(model_filepath, save_best_only=True))
 callbacks.append(CSVLogger(log_filepath))
 

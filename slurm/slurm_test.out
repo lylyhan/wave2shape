@@ -1,0 +1,67 @@
+2020-03-01 22:07:37.630513: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-03-01 22:07:37.712924: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:1c:00.0 name: Tesla V100-SXM2-16GB computeCapability: 7.0
+coreClock: 1.53GHz coreCount: 80 deviceMemorySize: 15.75GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-03-01 22:07:37.714135: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 1 with properties: 
+pciBusID: 0000:1d:00.0 name: Tesla V100-SXM2-16GB computeCapability: 7.0
+coreClock: 1.53GHz coreCount: 80 deviceMemorySize: 15.75GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-03-01 22:07:37.714187: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-01 22:07:37.914372: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-03-01 22:07:38.000448: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-03-01 22:07:38.081270: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-03-01 22:07:38.336559: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-03-01 22:07:38.400775: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-03-01 22:07:38.781290: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-01 22:07:38.785995: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0, 1
+2020-03-01 22:07:38.786341: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 AVX512F FMA
+2020-03-01 22:07:38.819775: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2400000000 Hz
+2020-03-01 22:07:38.819984: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x2ba16a55ba30 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-03-01 22:07:38.820011: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2020-03-01 22:07:39.057703: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:1c:00.0 name: Tesla V100-SXM2-16GB computeCapability: 7.0
+coreClock: 1.53GHz coreCount: 80 deviceMemorySize: 15.75GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-03-01 22:07:39.058879: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 1 with properties: 
+pciBusID: 0000:1d:00.0 name: Tesla V100-SXM2-16GB computeCapability: 7.0
+coreClock: 1.53GHz coreCount: 80 deviceMemorySize: 15.75GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-03-01 22:07:39.058917: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-01 22:07:39.058938: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-03-01 22:07:39.058948: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-03-01 22:07:39.058958: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-03-01 22:07:39.058968: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-03-01 22:07:39.058979: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-03-01 22:07:39.058990: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-01 22:07:39.063334: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0, 1
+2020-03-01 22:07:39.064992: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-01 22:07:51.077373: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-03-01 22:07:51.077626: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0 1 
+2020-03-01 22:07:51.077637: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N Y 
+2020-03-01 22:07:51.077641: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 1:   Y N 
+2020-03-01 22:07:51.083524: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 14291 MB memory) -> physical GPU (device: 0, name: Tesla V100-SXM2-16GB, pci bus id: 0000:1c:00.0, compute capability: 7.0)
+2020-03-01 22:07:51.086007: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:1 with 14291 MB memory) -> physical GPU (device: 1, name: Tesla V100-SXM2-16GB, pci bus id: 0000:1d:00.0, compute capability: 7.0)
+2020-03-01 22:07:51.088393: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x2ba3c8d9b750 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2020-03-01 22:07:51.088411: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Tesla V100-SXM2-16GB, Compute Capability 7.0
+2020-03-01 22:07:51.088416: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (1): Tesla V100-SXM2-16GB, Compute Capability 7.0
+Fitting model.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-01 22:08:19.074821: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-03-01 22:08:19.680047: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-01 22:08:23.861018: W tensorflow/stream_executor/gpu/redzone_allocator.cc:312] Not found: ./bin/ptxas not found
+Relying on driver to perform ptx compilation. This message will be only logged once.
+Train for 31 steps, validate for 1024 steps
+Epoch 1/12
+ 1/31 [..............................] - ETA: 3:02 - loss: 0.2191 - accuracy: 0.2500 2/31 [>.............................] - ETA: 2:47 - loss: 0.2219 - accuracy: 0.3281 3/31 [=>............................] - ETA: 2:30 - loss: 0.2155 - accuracy: 0.3854 4/31 [==>...........................] - ETA: 2:01 - loss: 0.2111 - accuracy: 0.3750 5/31 [===>..........................] - ETA: 1:41 - loss: 0.2115 - accuracy: 0.3625 6/31 [====>.........................] - ETA: 1:25 - loss: 0.2056 - accuracy: 0.3906 7/31 [=====>........................] - ETA: 1:13 - loss: 0.2015 - accuracy: 0.379514/31 [============>.................] - ETA: 26s - loss: 0.1810 - accuracy: 0.4688 18/31 [================>.............] - ETA: 16s - loss: 0.1740 - accuracy: 0.494828/31 [==========================>...] - ETA: 2s - loss: 0.1564 - accuracy: 0.5312 31/31 [==============================] - 252s 8s/step - loss: 0.1520 - accuracy: 0.5413 - val_loss: 0.1203 - val_accuracy: 0.2696
+Epoch 2/12
+ 1/31 [..............................] - ETA: 0s - loss: 0.0843 - accuracy: 0.625012/31 [==========>...................] - ETA: 0s - loss: 0.0760 - accuracy: 0.617225/31 [=======================>......] - ETA: 0s - loss: 0.0625 - accuracy: 0.61872020-03-01 22:12:30.813431: W tensorflow/core/kernels/data/generator_dataset_op.cc:103] Error occurred when finalizing GeneratorDataset iterator: Cancelled: Operation was cancelled
+31/31 [==============================] - 228s 7s/step - loss: 0.0579 - accuracy: 0.6290 - val_loss: 0.0704 - val_accuracy: 0.3273
+Epoch 3/12
+ 1/31 [..............................] - ETA: 0s - loss: 0.0428 - accuracy: 0.4688 9/31 [=======>......................] - ETA: 0s - loss: 0.0348 - accuracy: 0.607615/31 [=============>................] - ETA: 0s - loss: 0.0354 - accuracy: 0.589619/31 [=================>............] - ETA: 1s - loss: 0.0353 - accuracy: 0.600326/31 [========================>.....] - ETA: 0s - loss: 0.0361 - accuracy: 0.597430/31 [============================>.] - ETA: 0s - loss: 0.0356 - accuracy: 0.58442020-03-01 22:16:20.763975: W tensorflow/core/kernels/data/generator_dataset_op.cc:103] Error occurred when finalizing GeneratorDataset iterator: Cancelled: Operation was cancelled
+31/31 [==============================] - 221s 7s/step - loss: 0.0357 - accuracy: 0.5887 - val_loss: 0.0739 - val_accuracy: 0.3167
+Epoch 4/12
+ 1/31 [..............................] - ETA: 0s - loss: 0.0317 - accuracy: 0.5312 6/31 [====>.........................] - ETA: 3s - loss: 0.0318 - accuracy: 0.599010/31 [========>.....................] - ETA: 5s - loss: 0.0313 - accuracy: 0.550013/31 [===========>..................] - ETA: 4s - loss: 0.0315 - accuracy: 0.569719/31 [=================>............] - ETA: 3s - loss: 0.0317 - accuracy: 0.583923/31 [=====================>........] - ETA: 2s - loss: 0.0321 - accuracy: 0.566624/31 [======================>.......] - ETA: 2s - loss: 0.0322 - accuracy: 0.559925/31 [=======================>......] - ETA: 2s - loss: 0.0322 - accuracy: 0.560027/31 [=========================>....] - ETA: 1s - loss: 0.0320 - accuracy: 0.567128/31 [==========================>...] - ETA: 1s - loss: 0.0318 - accuracy: 0.573729/31 [===========================>..] - ETA: 0s - loss: 0.0318 - accuracy: 0.578730/31 [============================>.] - ETA: 0s - loss: 0.0318 - accuracy: 0.57402020-03-01 22:20:12.634472: W tensorflow/core/kernels/data/generator_dataset_op.cc:103] Error occurred when finalizing GeneratorDataset iterator: Cancelled: Operation was cancelled
