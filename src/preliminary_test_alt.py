@@ -97,7 +97,6 @@ def train(epochs,batch_size,active_streamers,J,Q,order,patience):
     train_idx = np.arange(0,1000,1) #df_train.values[:1000,0]
     test_idx = np.arange(0,300,1) #df_test.values[:300,0]
     train_batches=data_generator(df_train,train_params_normalized, path_to_train,J, Q, order, batch_size, train_idx,active_streamers,rate=64,random_state=random_state)
-    test_batches=data_generator(df_test,test_params_normalized, path_to_test,J, Q, order, batch_size, test_idx,active_streamers,rate=64,random_state=random_state)
     steps_per_epoch = len(train_idx) // batch_size
 
 
@@ -163,23 +162,16 @@ def train(epochs,batch_size,active_streamers,J,Q,order,patience):
     Sy_val = Sy_val.reshape((Sy_val.shape[2],Sy_val.shape[0],Sy_val.shape[1]))
     y_val = y_val.astype('float32')
 
+    print("Validation set dimension is "+str(Sy.val.shape)+" and "+str(y_val.shape))
 
+    train_gen = pescador.maps.keras_tuples(train_batches, 'input', 'y')
+    #preliminary test
     for epoch in range(epochs):
         model.fit(train_gen,steps_per_epoch=10,epochs=1)
         print('done fitting')
         loss,accuracy = model.evaluate(Sy_val,y_val)
         print(loss,accuracy)
 
-    #preliminary test
-    hist = model.fit(
-            pescador.maps.keras_tuples(train_batches, 'input', 'y'),
-            steps_per_epoch=steps_per_epoch,
-            epochs=epochs,
-            validation_data=pescador.maps.keras_tuples(test_batches, 'input', 'y'),
-            validation_steps=1024,
-            verbose=1,
-            callbacks=callbacks
-            )
 
 
 
