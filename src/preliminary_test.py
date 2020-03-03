@@ -27,20 +27,6 @@ def getsc_new(y,J,Q_num,order):
     Sy = scattering(torch.Tensor(y))
     return Sy
 
-df_train = pd.read_csv("../notebooks/train_param.csv")
-df_test = pd.read_csv("../notebooks/test_param.csv")
-df_val = pd.read_csv("../notebooks/val_param.csv")
-df_full = pd.read_csv("../notebooks/diffshapes_param.csv")
-
-
-# normalization of the physical parameters
-params = df_train.values[:,1:-1]
-scaler = MinMaxScaler()
-scaler.fit(params)
-train_params_normalized = scaler.transform(params)
-test_params_normalized = scaler.transform(df_test.values[:,1:-1])
-val_params_normalized = scaler.transform(df_val.values[:,1:-1])
-
 
 def feature_sampler(df,params_normalized,idx,path_to_folder,J,Q,order):
     """
@@ -78,96 +64,121 @@ def data_generator(df, params_normalized, path_to_folder, J, Q, order, batch_siz
     else:
         return pescador.maps.buffer_stream(mux, batch_size)
 
+ def train(epochs,batch_size,active_streamers,J,Q,order,patience):
+
+    df_train = pd.read_csv("../notebooks/train_param.csv")
+    df_test = pd.read_csv("../notebooks/test_param.csv")
+    df_val = pd.read_csv("../notebooks/val_param.csv")
+    df_full = pd.read_csv("../notebooks/diffshapes_param.csv")
+
+
+    # normalization of the physical parameters
+    params = df_train.values[:,1:-1]
+    scaler = MinMaxScaler()
+    scaler.fit(params)
+    train_params_normalized = scaler.transform(params)
+    test_params_normalized = scaler.transform(df_test.values[:,1:-1])
+    val_params_normalized = scaler.transform(df_val.values[:,1:-1])
+
+    ## first run with small number of training
+    #epochs=12
+    #batch_size=32
+    random_state=12345678
+    #active_streamers=64
+    path_to_train = "/scratch/hh2263/drum_data/train/"
+    path_to_test = "/scratch/hh2263/drum_data/test/"
+    #J = 8
+    #Q = 1
+    #order = 2 # remember to go to order 2 eventually
+    train_idx = np.arange(0,1000,1) #df_train.values[:1000,0]
+    test_idx = np.arange(0,300,1) #df_test.values[:300,0]
+    train_batches=data_generator(df_train,train_params_normalized, path_to_train,J, Q, order, batch_size, train_idx,active_streamers,rate=64,random_state=random_state)
+    test_batches=data_generator(df_test,test_params_normalized, path_to_test,J, Q, order, batch_size, test_idx,active_streamers,rate=64,random_state=random_state)
+    steps_per_epoch = len(train_idx) // batch_size
+
+
+    ##build the model
+    fname = random.choice(os.listdir(path_to_train))
+    rand_audio = os.path.join(path_to_train,fname)
+    y,sr = librosa.load(rand_audio)
+    Sy = getsc_new(torch.Tensor(y),J,Q,order).T
+    nrow, ncol = Sy.shape 
+    naudio = batch_size         # number of images in batch
+    nchan_in = 1       # number of input channels.  1 since it is BW
+    input_shape = Sy.shape
+
+
+    kernel_size = (8,)
+    nchan_out = 16
+
+    K.clear_session()
+    model=Sequential()
+    model.add(Conv1D(input_shape=input_shape, filters=nchan_out,
+                     kernel_size=kernel_size,activation= "relu", padding="same",name='conv1'))
+    model.add(AveragePooling1D(pool_size=(4,)))
+    model.add(Conv1D(filters=16,
+                     kernel_size=kernel_size,activation= "relu", padding="same",name='conv2' ))
+    model.add(AveragePooling1D(pool_size=(4,)))
+    model.add(Conv1D(filters=16,
+                     kernel_size=kernel_size,activation= "relu", padding="same",name='conv3' ))
+    model.add(AveragePooling1D(pool_size=(4,)))
+    model.add(Conv1D(filters=16,
+                     kernel_size=kernel_size,activation= "relu", padding="same",name='conv4' ))
+    model.add(AveragePooling1D(pool_size=(2,)))
+
+    model.add(BatchNormalization())
+    model.add(Flatten())
+    model.add(Dense(64, activation='relu'))
+    model.add(BatchNormalization())
+    #what activation should be chosen for last layer, for regression problem? should be a linear function
+    model.add(Dense(5, activation='linear')) #output layer that corresponds to the 5 physical parameters.
+
+
+    # Compile the model
+    model.compile(loss='mse', optimizer='adam', metrics=['accuracy'])
+
+    output_dir = "../output/"
+
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    model_filepath = os.path.join(output_dir, 'model.h5')
+    log_filepath = os.path.join(output_dir, 'train_log.csv')
+
+    callbacks = []
+    callbacks.append(EarlyStopping(patience=10))
+    callbacks.append(ModelCheckpoint(model_filepath, save_best_only=True))
+    callbacks.append(CSVLogger(log_filepath))
+
+    print("Fitting model.")
+    sys.stdout.flush()
 
 
 
-## first run with small number of training
-epochs=12
-batch_size=32
-random_state=12345678
-active_streamers=64
-path_to_train = "/scratch/hh2263/drum_data/train/"
-path_to_test = "/scratch/hh2263/drum_data/test/"
-J = 8
-Q = 1
-order = 2 # remember to go to order 2 eventually
-train_idx = np.arange(0,1000,1) #df_train.values[:1000,0]
-test_idx = np.arange(0,300,1) #df_test.values[:300,0]
-train_batches=data_generator(df_train,train_params_normalized, path_to_train,J, Q, order, batch_size, train_idx,active_streamers,rate=64,random_state=random_state)
-test_batches=data_generator(df_test,test_params_normalized, path_to_test,J, Q, order, batch_size, test_idx,active_streamers,rate=64,random_state=random_state)
-steps_per_epoch = len(train_idx) // batch_size
-
-
-##build the model
-fname = random.choice(os.listdir(path_to_train))
-rand_audio = os.path.join(path_to_train,fname)
-y,sr = librosa.load(rand_audio)
-Sy = getsc_new(torch.Tensor(y),J,Q,order).T
-nrow, ncol = Sy.shape 
-naudio = batch_size         # number of images in batch
-nchan_in = 1       # number of input channels.  1 since it is BW
-input_shape = Sy.shape
-
-
-kernel_size = (8,)
-nchan_out = 16
-
-K.clear_session()
-model=Sequential()
-model.add(Conv1D(input_shape=input_shape, filters=nchan_out,
-                 kernel_size=kernel_size,activation= "relu", padding="same",name='conv1'))
-model.add(AveragePooling1D(pool_size=(4,)))
-model.add(Conv1D(filters=16,
-                 kernel_size=kernel_size,activation= "relu", padding="same",name='conv2' ))
-model.add(AveragePooling1D(pool_size=(4,)))
-model.add(Conv1D(filters=16,
-                 kernel_size=kernel_size,activation= "relu", padding="same",name='conv3' ))
-model.add(AveragePooling1D(pool_size=(4,)))
-model.add(Conv1D(filters=16,
-                 kernel_size=kernel_size,activation= "relu", padding="same",name='conv4' ))
-model.add(AveragePooling1D(pool_size=(2,)))
-
-model.add(BatchNormalization())
-model.add(Flatten())
-model.add(Dense(64, activation='relu'))
-model.add(BatchNormalization())
-#what activation should be chosen for last layer, for regression problem? should be a linear function
-model.add(Dense(5, activation='linear')) #output layer that corresponds to the 5 physical parameters.
-
-
-# Compile the model
-model.compile(loss='mse', optimizer='adam', metrics=['accuracy'])
-
-output_dir = "../output/"
-
-if not os.path.exists(output_dir):
-    os.makedirs(output_dir)
-model_filepath = os.path.join(output_dir, 'model.h5')
-log_filepath = os.path.join(output_dir, 'train_log.csv')
-
-callbacks = []
-callbacks.append(EarlyStopping(patience=10))
-callbacks.append(ModelCheckpoint(model_filepath, save_best_only=True))
-callbacks.append(CSVLogger(log_filepath))
-
-print("Fitting model.")
-sys.stdout.flush()
+    #preliminary test
+    hist = model.fit(
+            pescador.maps.keras_tuples(train_batches, 'input', 'y'),
+            steps_per_epoch=steps_per_epoch,
+            epochs=epochs,
+            validation_data=pescador.maps.keras_tuples(test_batches, 'input', 'y'),
+            validation_steps=1024,
+            verbose=1,
+            callbacks=callbacks
+            )
 
 
 
-#preliminary test
-hist = model.fit(
-        pescador.maps.keras_tuples(train_batches, 'input', 'y'),
-        steps_per_epoch=steps_per_epoch,
-        epochs=epochs,
-        validation_data=pescador.maps.keras_tuples(test_batches, 'input', 'y'),
-        validation_steps=1024,
-        verbose=1,
-        callbacks=callbacks
-        )
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
 
+    parser.add_argument('epochs',type=int,default=12)
+    parser.add_argument('batch_size',type=int,default=32)
+    parser.add_argument('active_streamers',type=int,default=64)
+    parser.add_argument('J',type=int,default=8)
+    parser.add_argument('Q',type=int,default=1)
+    parser.add_argument('order',type=int,default=2)
+    parser.add_argument('patience',type=int,default=10)
 
-
-
+    args = vars(parser.parse_args())
+    train(**args)
 
 

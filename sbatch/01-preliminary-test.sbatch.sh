@@ -16,4 +16,4 @@ module load cuda/9.0.176
 module load cudnn/9.0v7.3.0.29
 module load ffmpeg/intel/3.2.2
 
-python /home/hh2263/wave2shape/src/preliminary_test.py
+python /home/hh2263/wave2shape/src/preliminary_test.py --epochs 1
