@@ -6,6 +6,8 @@ import pandas as pd
 import librosa
 import numpy as np
 import datetime
+import  time
+import argparse
 
 # scattering order one
 def getsc_new(y,J,Q_num,order):
@@ -18,7 +20,7 @@ def getsc_new(y,J,Q_num,order):
 	return Sy
 
 def make_pickle(J,Q,order):
-	df_val = pd.read_csv("./val_param.csv")
+	df_val = pd.read_csv("../notebooks/val_param.csv")
 	val_id = df_val.values[:,0] 
 	val_param = df_val.values[:,1:-1]
 	J = 8
