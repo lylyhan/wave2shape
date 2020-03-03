@@ -1,10 +1,10 @@
 import pickle
+import torch
 from kymatio import Scattering1D
 import os
 import pandas as pd
 import librosa
 import numpy as np
-import torch
 import datetime
 
 # scattering order one
