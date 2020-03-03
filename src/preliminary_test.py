@@ -183,7 +183,7 @@ if __name__ == '__main__':
 
     args = vars(parser.parse_args())
 
-
+    start_time = int(time.time())
     print(str(datetime.datetime.now()) + " Start.")
     print("Generating validation pickle files.")
     #START TRAINING
