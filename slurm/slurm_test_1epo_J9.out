@@ -1,4 +1,64 @@
-Traceback (most recent call last):
-  File "/home/hh2263/wave2shape/src/preliminary_test.py", line 171, in <module>
-    parser = argparse.ArgumentParser()
-NameError: name 'argparse' is not defined
+2020-03-03 15:32:53.202490: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-03-03 15:32:53.275235: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:84:00.0 name: Tesla P100-PCIE-16GB computeCapability: 6.0
+coreClock: 1.3285GHz coreCount: 56 deviceMemorySize: 15.90GiB deviceMemoryBandwidth: 681.88GiB/s
+2020-03-03 15:32:53.277148: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 1 with properties: 
+pciBusID: 0000:85:00.0 name: Tesla P100-PCIE-16GB computeCapability: 6.0
+coreClock: 1.3285GHz coreCount: 56 deviceMemorySize: 15.90GiB deviceMemoryBandwidth: 681.88GiB/s
+2020-03-03 15:32:53.277207: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-03 15:32:53.499522: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-03-03 15:32:53.700655: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-03-03 15:32:53.796074: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-03-03 15:32:54.103683: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-03-03 15:32:54.247706: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-03-03 15:32:54.852556: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-03 15:32:54.861159: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0, 1
+2020-03-03 15:32:54.861741: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
+2020-03-03 15:32:54.923073: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2599770000 Hz
+2020-03-03 15:32:54.923377: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x2aba16cfa770 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-03-03 15:32:54.923408: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2020-03-03 15:32:55.183907: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:84:00.0 name: Tesla P100-PCIE-16GB computeCapability: 6.0
+coreClock: 1.3285GHz coreCount: 56 deviceMemorySize: 15.90GiB deviceMemoryBandwidth: 681.88GiB/s
+2020-03-03 15:32:55.185250: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 1 with properties: 
+pciBusID: 0000:85:00.0 name: Tesla P100-PCIE-16GB computeCapability: 6.0
+coreClock: 1.3285GHz coreCount: 56 deviceMemorySize: 15.90GiB deviceMemoryBandwidth: 681.88GiB/s
+2020-03-03 15:32:55.185291: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-03 15:32:55.185315: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-03-03 15:32:55.185333: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-03-03 15:32:55.185349: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-03-03 15:32:55.185366: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-03-03 15:32:55.185382: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-03-03 15:32:55.185399: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-03 15:32:55.190542: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0, 1
+2020-03-03 15:32:55.227792: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-03 15:33:19.215939: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-03-03 15:33:19.216222: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0 1 
+2020-03-03 15:33:19.216236: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N Y 
+2020-03-03 15:33:19.216240: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 1:   Y N 
+2020-03-03 15:33:19.223068: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 14787 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:84:00.0, compute capability: 6.0)
+2020-03-03 15:33:19.225954: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:1 with 14787 MB memory) -> physical GPU (device: 1, name: Tesla P100-PCIE-16GB, pci bus id: 0000:85:00.0, compute capability: 6.0)
+2020-03-03 15:33:19.228394: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x2abbdd774cc0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2020-03-03 15:33:19.228410: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Tesla P100-PCIE-16GB, Compute Capability 6.0
+2020-03-03 15:33:19.228415: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (1): Tesla P100-PCIE-16GB, Compute Capability 6.0
+2020-03-03 15:32:49.762661 Start.
+Generating validation pickle files.
+Fitting model.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-03 15:33:51.855911: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-03-03 15:33:52.558557: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-03 15:33:57.312043: W tensorflow/stream_executor/gpu/redzone_allocator.cc:312] Not found: ./bin/ptxas not found
+Relying on driver to perform ptx compilation. This message will be only logged once.
+Train for 31 steps, validate for 1024 steps
+ 1/31 [..............................] - ETA: 3:16 - loss: 0.2537 - accuracy: 0.3750 2/31 [>.............................] - ETA: 2:56 - loss: 0.2231 - accuracy: 0.3906 3/31 [=>............................] - ETA: 2:36 - loss: 0.2308 - accuracy: 0.3750 4/31 [==>...........................] - ETA: 2:05 - loss: 0.2177 - accuracy: 0.3828 5/31 [===>..........................] - ETA: 1:44 - loss: 0.2098 - accuracy: 0.4250 6/31 [====>.........................] - ETA: 1:28 - loss: 0.2043 - accuracy: 0.4427 7/31 [=====>........................] - ETA: 1:16 - loss: 0.1957 - accuracy: 0.450912/31 [==========>...................] - ETA: 35s - loss: 0.1821 - accuracy: 0.5391 14/31 [============>.................] - ETA: 27s - loss: 0.1779 - accuracy: 0.564718/31 [================>.............] - ETA: 16s - loss: 0.1678 - accuracy: 0.609427/31 [=========================>....] - ETA: 3s - loss: 0.1533 - accuracy: 0.6574 31/31 [==============================] - 260s 8s/step - loss: 0.1460 - accuracy: 0.6623 - val_loss: 0.1225 - val_accuracy: 0.2675
+2020-03-03 15:38:11.334966: W tensorflow/core/kernels/data/generator_dataset_op.cc:103] Error occurred when finalizing GeneratorDataset iterator: Cancelled: Operation was cancelled
+2020-03-03 15:38:11.730323: W tensorflow/core/kernels/data/generator_dataset_op.cc:103] Error occurred when finalizing GeneratorDataset iterator: Cancelled: Operation was cancelled
+2020-03-03 15:38:11.745255 Finish.
+Total elapsed time: 00:05:22.75.
