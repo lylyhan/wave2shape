@@ -1,0 +1,4 @@
+  File "/home/hh2263/wave2shape/src/preliminary_test.py", line 67
+    def train(epochs,batch_size,active_streamers,J,Q,order,patience):
+                                                                    ^
+IndentationError: unindent does not match any outer indentation level
