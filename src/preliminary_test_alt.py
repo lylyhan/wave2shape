@@ -20,6 +20,7 @@ import sys
 import datetime
 import  time
 import argparse
+import pickle
 
 def getsc_new(y,J,Q_num,order):
     """
@@ -155,7 +156,19 @@ def train(epochs,batch_size,active_streamers,J,Q,order,patience):
     print("Fitting model.")
     sys.stdout.flush()
 
+    #load validation features+gt 
+    pkl_path = '/scratch/hh2263/drum_data/val/J_8Q_1order_2.pkl'
+    pkl_file = open(pkl_path, 'rb')
+    Sy_val,y_val = pickle.load(pkl_file) 
+    Sy_val = Sy_val.reshape((Sy_val.shape[2],Sy_val.shape[0],Sy_val.shape[1]))
+    y_val = y_val.astype('float32')
 
+
+    for epoch in range(epochs):
+        model.fit(train_gen,steps_per_epoch=10,epochs=1)
+        print('done fitting')
+        loss,accuracy = model.evaluate(Sy_val,y_val)
+        print(loss,accuracy)
 
     #preliminary test
     hist = model.fit(
