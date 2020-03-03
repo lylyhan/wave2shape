@@ -64,7 +64,7 @@ def data_generator(df, params_normalized, path_to_folder, J, Q, order, batch_siz
     else:
         return pescador.maps.buffer_stream(mux, batch_size)
 
- def train(epochs,batch_size,active_streamers,J,Q,order,patience):
+def train(epochs,batch_size,active_streamers,J,Q,order,patience):
 
     df_train = pd.read_csv("../notebooks/train_param.csv")
     df_test = pd.read_csv("../notebooks/test_param.csv")
