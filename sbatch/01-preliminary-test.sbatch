@@ -1,4 +1,4 @@
- #!/bin/bash
+#!/bin/bash
 
 #BATCH --job-name=preliminary-test-alt
 #SBATCH --nodes=1
@@ -7,7 +7,7 @@
 #SBATCH --time=12:00:00
 #SBATCH --mem=62GB
 #SBATCH --gres=gpu:2
-#SBATCH --output=/home/hh2263/wave2shape/slurm/slurm_test_w_loop.out   
+#SBATCH --output=/home/hh2263/wave2shape/slurm/slurm_test_corrected_val.out   
 
 
 module purge
