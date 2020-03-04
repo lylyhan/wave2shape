@@ -162,7 +162,7 @@ def train(epochs,batch_size,active_streamers,J,Q,order,patience):
     Sy_val = Sy_val.reshape((Sy_val.shape[2],Sy_val.shape[0],Sy_val.shape[1]))
     y_val = y_val.astype('float32')
 
-    print("Validation set dimension is "+str(Sy.val.shape)+" and "+str(y_val.shape))
+    print("Validation set dimension is "+str(Sy_val.shape)+" and "+str(y_val.shape))
 
     train_gen = pescador.maps.keras_tuples(train_batches, 'input', 'y')
     #preliminary test

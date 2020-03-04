@@ -1,0 +1,66 @@
+2020-03-03 16:32:22.185520: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-03-03 16:32:22.251551: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:05:00.0 name: Tesla K80 computeCapability: 3.7
+coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
+2020-03-03 16:32:22.253314: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 1 with properties: 
+pciBusID: 0000:84:00.0 name: Tesla K80 computeCapability: 3.7
+coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
+2020-03-03 16:32:22.253372: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-03 16:32:22.256802: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-03-03 16:32:22.259415: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-03-03 16:32:22.260184: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-03-03 16:32:22.262896: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-03-03 16:32:22.264423: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-03-03 16:32:22.269361: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-03 16:32:22.276055: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0, 1
+2020-03-03 16:32:22.276474: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
+2020-03-03 16:32:22.286270: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2599820000 Hz
+2020-03-03 16:32:22.286428: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x2b39b52b7e70 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-03-03 16:32:22.286448: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2020-03-03 16:32:22.425565: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:05:00.0 name: Tesla K80 computeCapability: 3.7
+coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
+2020-03-03 16:32:22.427023: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 1 with properties: 
+pciBusID: 0000:84:00.0 name: Tesla K80 computeCapability: 3.7
+coreClock: 0.8235GHz coreCount: 13 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 223.96GiB/s
+2020-03-03 16:32:22.427066: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-03 16:32:22.427093: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-03-03 16:32:22.427111: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-03-03 16:32:22.427128: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-03-03 16:32:22.427145: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-03-03 16:32:22.427163: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-03-03 16:32:22.427180: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-03 16:32:22.432659: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0, 1
+2020-03-03 16:32:22.432698: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-03 16:32:26.774803: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-03-03 16:32:26.774934: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0 1 
+2020-03-03 16:32:26.774948: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N N 
+2020-03-03 16:32:26.774952: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 1:   N N 
+2020-03-03 16:32:26.781745: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 10565 MB memory) -> physical GPU (device: 0, name: Tesla K80, pci bus id: 0000:05:00.0, compute capability: 3.7)
+2020-03-03 16:32:26.784689: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:1 with 10565 MB memory) -> physical GPU (device: 1, name: Tesla K80, pci bus id: 0000:84:00.0, compute capability: 3.7)
+2020-03-03 16:32:26.787055: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x2b3ae4434b60 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2020-03-03 16:32:26.787070: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Tesla K80, Compute Capability 3.7
+2020-03-03 16:32:26.787076: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (1): Tesla K80, Compute Capability 3.7
+2020-03-03 16:32:19.935314 Start.
+Generating validation pickle files.
+Fitting model.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-03 16:32:42.489035: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-03-03 16:32:42.830494: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-03 16:32:44.083115: W tensorflow/stream_executor/gpu/redzone_allocator.cc:312] Not found: ./bin/ptxas not found
+Relying on driver to perform ptx compilation. This message will be only logged once.
+Validation set dimension is (1506, 128, 43) and (1506, 5)
+Train for 10 steps
+ 1/10 [==>...........................] - ETA: 27s - loss: 0.1983 - accuracy: 0.2188 2/10 [=====>........................] - ETA: 47s - loss: 0.2006 - accuracy: 0.2031 3/10 [========>.....................] - ETA: 39s - loss: 0.2037 - accuracy: 0.2292 4/10 [===========>..................] - ETA: 28s - loss: 0.2205 - accuracy: 0.2969 5/10 [==============>...............] - ETA: 20s - loss: 0.2128 - accuracy: 0.3375 6/10 [=================>............] - ETA: 14s - loss: 0.2112 - accuracy: 0.3385 7/10 [====================>.........] - ETA: 9s - loss: 0.2070 - accuracy: 0.3616 10/10 [==============================] - 23s 2s/step - loss: 0.1950 - accuracy: 0.3781
+2020-03-03 16:33:04.665648: W tensorflow/core/kernels/data/generator_dataset_op.cc:103] Error occurred when finalizing GeneratorDataset iterator: Cancelled: Operation was cancelled
+done fitting
+  32/1506 [..............................] - ETA: 7s - loss: 2708771.2500 - accuracy: 0.8125 768/1506 [==============>...............] - ETA: 0s - loss: 2629205.5417 - accuracy: 0.95441504/1506 [============================>.] - ETA: 0s - loss: 2890974.0106 - accuracy: 0.97671506/1506 [==============================] - 0s 230us/sample - loss: 2892840.8293 - accuracy: 0.9768
+2892840.8293492696 0.9767596
+2020-03-03 16:33:05.081109 Finish.
+Traceback (most recent call last):
+  File "/home/hh2263/wave2shape/src/preliminary_test_alt.py", line 199, in <module>
+    elapsed_time = time.time() - int(start_time)
+NameError: name 'start_time' is not defined
