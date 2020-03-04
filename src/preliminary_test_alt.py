@@ -18,8 +18,8 @@ import os
 import librosa
 import sys
 import datetime
-import  time
-import argparse
+import time
+import argparsep
 import pickle
 
 def getsc_new(y,J,Q_num,order):
@@ -159,21 +159,19 @@ def train(epochs,batch_size,active_streamers,J,Q,order,patience):
     pkl_file = open(pkl_path, 'rb')
     Sy_val,y_val = pickle.load(pkl_file) 
     Sy_val = Sy_val.reshape((Sy_val.shape[2],Sy_val.shape[0],Sy_val.shape[1]))
-    Sy_val_normalized = Sy_val
-    for i in Sy_val.shape[0]:
-        Sy_val_normalized[i,:,:] = scaler.transform(Sy_val[i,:,:].reshape((Sy_val.shape[1],Sy_val.shape[2])))
+    y_val_normalized = scaler.transform(y_val)
     
-    y_val = y_val.astype('float32')
+    y_val_normalized = y_val_normalized.astype('float32')
 
 
-    print("Validation set dimension is "+str(Sy_val_normalized.shape)+" and "+str(y_val.shape))
+    print("Validation set dimension is "+str(Sy_val_normalized.shape)+" and "+str(y_val_normalized.shape))
 
     train_gen = pescador.maps.keras_tuples(train_batches, 'input', 'y')
     #preliminary test
     for epoch in range(epochs):
         model.fit(train_gen,steps_per_epoch=steps_per_epoch,epochs=1)
         print('done fitting')
-        loss,accuracy = model.evaluate(Sy_val_normalized,y_val)
+        loss,accuracy = model.evaluate(Sy_val,y_val_normalized)
         print(loss,accuracy)
 
 
