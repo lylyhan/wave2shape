@@ -90,12 +90,11 @@ def train(epochs,batch_size,active_streamers,J,Q,order,patience):
     random_state=12345678
     #active_streamers=64
     path_to_train = "/scratch/hh2263/drum_data/train/"
-    path_to_test = "/scratch/hh2263/drum_data/test/"
+   #path_to_test = "/scratch/hh2263/drum_data/test/"
     #J = 8
     #Q = 1
     #order = 2 # remember to go to order 2 eventually
-    train_idx = np.arange(0,1000,1) #df_train.values[:1000,0]
-    test_idx = np.arange(0,300,1) #df_test.values[:300,0]
+    train_idx = np.arange(0,params.shape[0],1)#np.arange(0,1000,1) #df_train.values[:1000,0]
     train_batches=data_generator(df_train,train_params_normalized, path_to_train,J, Q, order, batch_size, train_idx,active_streamers,rate=64,random_state=random_state)
     steps_per_epoch = len(train_idx) // batch_size
 
@@ -156,7 +155,7 @@ def train(epochs,batch_size,active_streamers,J,Q,order,patience):
     sys.stdout.flush()
 
     #load validation features+gt 
-    pkl_path = '/scratch/hh2263/drum_data/val/J_8Q_1order_2.pkl'
+    pkl_path = '/scratch/hh2263/drum_data/val/J_8_Q_1_order_2.pkl'
     pkl_file = open(pkl_path, 'rb')
     Sy_val,y_val = pickle.load(pkl_file) 
     Sy_val = Sy_val.reshape((Sy_val.shape[2],Sy_val.shape[0],Sy_val.shape[1]))
@@ -188,7 +187,7 @@ if __name__ == '__main__':
 
     args = vars(parser.parse_args())
 
-
+    start_time = int(time.time())
     print(str(datetime.datetime.now()) + " Start.")
     print("Generating validation pickle files.")
     #START TRAINING
