@@ -69,7 +69,7 @@ def data_generator(df, params_normalized, path_to_folder, J, Q, order, batch_siz
         return pescador.maps.buffer_stream(mux, batch_size)
 
 def train(epochs,batch_size,active_streamers,J,Q,order,patience):
-
+    print("Current GPU: "+tf.config.experimental.list_physical_devices('GPU'))
     df_train = pd.read_csv("../notebooks/train_param.csv")
     df_test = pd.read_csv("../notebooks/test_param.csv")
     df_val = pd.read_csv("../notebooks/val_param.csv")
@@ -169,7 +169,12 @@ def train(epochs,batch_size,active_streamers,J,Q,order,patience):
     train_gen = pescador.maps.keras_tuples(train_batches, 'input', 'y')
     #preliminary test
     for epoch in range(epochs):
-        model.fit(train_gen,steps_per_epoch=steps_per_epoch,use_multiprocessing=True,epochs=1,verbose=2)
+        model.fit(train_gen,
+            steps_per_epoch=steps_per_epoch,
+            use_multiprocessing=True,
+            epochs=1,
+            verbose=2,
+            callbacks=callbacks)
         print('done fitting')
         loss,accuracy = model.evaluate(Sy_val,y_val_normalized)
         print(loss,accuracy)
