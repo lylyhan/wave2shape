@@ -19,7 +19,7 @@ import librosa
 import sys
 import datetime
 import time
-import argparsep
+import argparse
 import pickle
 
 def getsc_new(y,J,Q_num,order):
@@ -164,12 +164,12 @@ def train(epochs,batch_size,active_streamers,J,Q,order,patience):
     y_val_normalized = y_val_normalized.astype('float32')
 
 
-    print("Validation set dimension is "+str(Sy_val_normalized.shape)+" and "+str(y_val_normalized.shape))
+    print("Validation set dimension is "+str(Sy_val.shape)+" and "+str(y_val_normalized.shape))
 
     train_gen = pescador.maps.keras_tuples(train_batches, 'input', 'y')
     #preliminary test
     for epoch in range(epochs):
-        model.fit(train_gen,steps_per_epoch=steps_per_epoch,epochs=1,verbose=2)
+        model.fit(train_gen,steps_per_epoch=steps_per_epoch,use_multiprocessing=True,epochs=1,verbose=2)
         print('done fitting')
         loss,accuracy = model.evaluate(Sy_val,y_val_normalized)
         print(loss,accuracy)
