@@ -169,7 +169,7 @@ def train(epochs,batch_size,active_streamers,J,Q,order,patience):
     train_gen = pescador.maps.keras_tuples(train_batches, 'input', 'y')
     #preliminary test
     for epoch in range(epochs):
-        model.fit(train_gen,steps_per_epoch=steps_per_epoch,epochs=1)
+        model.fit(train_gen,steps_per_epoch=steps_per_epoch,epochs=1,verbose=2)
         print('done fitting')
         loss,accuracy = model.evaluate(Sy_val,y_val_normalized)
         print(loss,accuracy)

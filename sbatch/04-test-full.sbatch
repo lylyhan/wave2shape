@@ -1,12 +1,12 @@
 #!/bin/bash
 
-#BATCH --job-name=preliminary-test-alt
+#BATCH --job-name=test_all
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=1
 #SBATCH --cpus-per-task=4
 #SBATCH --time=12:00:00
 #SBATCH --mem=62GB
-#SBATCH --gres=gpu:2
+#SBATCH --gres=gpu:1
 #SBATCH --output=/home/hh2263/wave2shape/slurm/slurm_test_full_w_loop.out   
 
 
