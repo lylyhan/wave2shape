@@ -34,9 +34,8 @@ sample_ids = df_tr.values[:, 0]
 
 
 # Define scattering operator
-N = 2**16
-scattering = Scattering1D(
-    J=J,shape=(N,), Q=Q, max_order=order)
+N = 2 ** 16
+scattering = Scattering1D(J=J, shape=(N,), Q=Q, max_order=order)
 
 
 # Compute scattering features.
@@ -52,18 +51,15 @@ X = np.stack(X)
 
 
 # Load physical parameters. (ground truth)
-y = df.values[:,1:-1]
+y = df.values[:, 1:-1]
 
 
 # Export to pickle file.
 fold_dir = os.path.join(output_dir, fold_str)
 os.makedirs(fold_dir, exist_ok=True)
-pickle_name = "_".join([
-    "scattering",
-    "J-" + str(J).zfill(2),
-    "Q-" + str(Q).zfill(2),
-    "order" + str(order)
-])
+pickle_name = "_".join(
+    ["scattering", "J-" + str(J).zfill(2), "Q-" + str(Q).zfill(2), "order" + str(order)]
+)
 pickle_path = os.path.join(fold_dir, pickle_name + ".pkl")
 with open(pickle_path, 'wb') as pickle_file:
     pickle.dump([X, y], pickle_file)
@@ -74,7 +70,8 @@ print(str(datetime.datetime.now()) + " Finish.")
 elapsed_time = time.time() - int(start_time)
 elapsed_hours = int(elapsed_time / (60 * 60))
 elapsed_minutes = int((elapsed_time % (60 * 60)) / 60)
-elapsed_seconds = elapsed_time % 60.
+elapsed_seconds = elapsed_time % 60.0
 elapsed_str = "{:>02}:{:>02}:{:>05.2f}".format(
-    elapsed_hours, elapsed_minutes, elapsed_seconds)
+    elapsed_hours, elapsed_minutes, elapsed_seconds
+)
 print("Total elapsed time: " + elapsed_str + ".")
