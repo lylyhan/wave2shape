@@ -41,7 +41,7 @@ scattering = Scattering1D(J=J, shape=(N,), Q=Q, max_order=order)
 
 # Compute scattering features.
 X = []
-for sample_id in tqdm.tqdm(sample_ids):
+for sample_id in sample_ids:
     wav_name = str(sample_id) + "_sound.wav"
     wav_path = os.path.join(wav_dir, fold_str, wav_name)
     waveform, _ = librosa.load(wav_path)
