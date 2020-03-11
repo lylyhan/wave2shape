@@ -32,7 +32,7 @@ print("Computing scattering features.")
 
 
 # Load CSV file of physical parameters.
-csv_path = "../notebooks/" + fold_str + "_param.csv"
+csv_path = "../../../notebooks/" + fold_str + "_param.csv"
 df = pd.read_csv(csv_path)
 sample_ids = df.values[:, 0]
 
