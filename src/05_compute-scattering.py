@@ -37,7 +37,7 @@ sample_ids = df.values[:, 0]
 
 
 # Define scattering operator
-N = 2 ** 16
+N = 2 ** 15
 scattering = Scattering1D(J=J, shape=(N,), Q=Q, max_order=order)
 
 
