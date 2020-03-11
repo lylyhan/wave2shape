@@ -21,3 +21,4 @@ sbatch 05_fold-train_J-12_order-1.sbatch
 sbatch 05_fold-train_J-12_order-2.sbatch
 sbatch 05_fold-train_J-14_order-1.sbatch
 sbatch 05_fold-train_J-14_order-2.sbatch
+
