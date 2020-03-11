@@ -6,7 +6,7 @@ sys.path.append("../src")
 
 # Define constants.
 folds = ["val", "train"]
-Qs = [1, 2]
+Js = [6, 8, 10, 12, 14]
 orders = [1, 2]
 script_name = os.path.basename(__file__)
 script_path = os.path.join("..", "..", "..", "src", script_name)
@@ -22,17 +22,17 @@ os.makedirs(slurm_dir, exist_ok=True)
 # Loop over folds: training and validation.
 for fold in folds:
 
-    # Loop over quality factors.
-    for Q in Qs:
+    # Loop over scales.
+    for J in Js:
 
         # Loop over scattering orders.
         for order in orders:
 
             script_path_with_args = " ".join(
-                [script_path, str(fold), str(Q), str(order)])
+                [script_path, str(fold), str(J), str(order)])
             job_name = "_".join([
                 script_name[:2],
-                "fold-" + str(fold), "Q-" +  str(Q), "order-" + str(order)
+                "fold-" + str(fold), "J-" +  str(J).zfill(2), "order-" + str(order)
             ])
             file_name = job_name + ".sbatch"
             file_path = os.path.join(sbatch_dir, file_name)
@@ -70,15 +70,18 @@ with open(file_path, "w") as f:
     # Loop over folds: training and validation.
     for fold in folds:
 
-        # Loop over quality factors.
-        for Q in Qs:
+        # Loop over scales.
+        for J in Js:
 
             # Loop over scattering orders.
             for order in orders:
 
                 # Define job name.
-                job_name = "_".join(
-                    [script_name[:2], str(fold), str(Q), str(order)])
+                job_name = "_".join([
+                    script_name[:2],
+                    "fold-" + str(fold),
+                    "J-" + str(J).zfill(2),
+                    "order-" + str(order)])
                 sbatch_str = "sbatch " + job_name + ".sbatch"
 
                 # Write SBATCH command to shell file.

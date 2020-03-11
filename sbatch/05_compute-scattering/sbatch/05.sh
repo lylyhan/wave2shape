@@ -1,12 +1,23 @@
 # This shell script computes scattering features for various hyperparmeter settings.
 
-sbatch 05_val_1_1.sbatch
-sbatch 05_val_1_2.sbatch
-sbatch 05_val_2_1.sbatch
-sbatch 05_val_2_2.sbatch
+sbatch 05_fold-val_J-06_order-1.sbatch
+sbatch 05_fold-val_J-06_order-2.sbatch
+sbatch 05_fold-val_J-08_order-1.sbatch
+sbatch 05_fold-val_J-08_order-2.sbatch
+sbatch 05_fold-val_J-10_order-1.sbatch
+sbatch 05_fold-val_J-10_order-2.sbatch
+sbatch 05_fold-val_J-12_order-1.sbatch
+sbatch 05_fold-val_J-12_order-2.sbatch
+sbatch 05_fold-val_J-14_order-1.sbatch
+sbatch 05_fold-val_J-14_order-2.sbatch
 
-sbatch 05_train_1_1.sbatch
-sbatch 05_train_1_2.sbatch
-sbatch 05_train_2_1.sbatch
-sbatch 05_train_2_2.sbatch
-
+sbatch 05_fold-train_J-06_order-1.sbatch
+sbatch 05_fold-train_J-06_order-2.sbatch
+sbatch 05_fold-train_J-08_order-1.sbatch
+sbatch 05_fold-train_J-08_order-2.sbatch
+sbatch 05_fold-train_J-10_order-1.sbatch
+sbatch 05_fold-train_J-10_order-2.sbatch
+sbatch 05_fold-train_J-12_order-1.sbatch
+sbatch 05_fold-train_J-12_order-2.sbatch
+sbatch 05_fold-train_J-14_order-1.sbatch
+sbatch 05_fold-train_J-14_order-2.sbatch

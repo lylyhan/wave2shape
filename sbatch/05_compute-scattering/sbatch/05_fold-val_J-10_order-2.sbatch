@@ -6,7 +6,7 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --time=12:00:00
 #SBATCH --mem=8GB
-#SBATCH --output=../slurm/05_fold-train_Q-2_order-1_%j.out
+#SBATCH --output=../slurm/05_fold-val_J-10_order-2_%j.out
 
 module purge
 source activate w2s
@@ -14,4 +14,4 @@ source activate w2s
 # The first argument is the fold: training or validation.
 # The second argument is the quality factor.
 # The third argument is the scattering order.
-python ../../../src/05_compute-scattering.py train 2 1
+python ../../../src/05_compute-scattering.py val 10 2
