@@ -33,7 +33,7 @@ print("Computing scattering features.")
 # Load CSV file of physical parameters.
 csv_path = "../notebooks/" + fold_str + "_param.csv"
 df = pd.read_csv(csv_path)
-sample_ids = df_tr.values[:, 0]
+sample_ids = df.values[:, 0]
 
 
 # Define scattering operator
