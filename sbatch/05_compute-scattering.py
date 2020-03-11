@@ -5,7 +5,7 @@ sys.path.append("../src")
 
 
 # Define constants.
-folds = ["val", "train"]
+folds = ["test", "train", "val"]
 Js = [6, 8, 10, 12, 14]
 orders = [1, 2]
 script_name = os.path.basename(__file__)
@@ -19,7 +19,7 @@ slurm_dir = os.path.join(script_name[:-3], "slurm")
 os.makedirs(slurm_dir, exist_ok=True)
 
 
-# Loop over folds: training and validation.
+# Loop over folds: training, test, and validation.
 for fold in folds:
 
     # Loop over scales.
