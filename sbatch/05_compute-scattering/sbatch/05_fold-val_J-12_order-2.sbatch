@@ -4,8 +4,8 @@
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=1
 #SBATCH --cpus-per-task=1
-#SBATCH --time=24:00:00
-#SBATCH --mem=16GB
+#SBATCH --time=6:00:00
+#SBATCH --mem=8GB
 #SBATCH --output=../slurm/05_fold-val_J-12_order-2_%j.out
 
 module purge
