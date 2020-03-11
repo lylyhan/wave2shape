@@ -9,6 +9,7 @@ import pickle
 import time
 import torch
 import tqdm
+import sys
 
 # Define output path.
 data_dir = "/scratch/vl1019/han2020fa_data/"
