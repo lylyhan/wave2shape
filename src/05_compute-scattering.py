@@ -10,9 +10,11 @@ import torch
 import tqdm
 
 # Define output path.
-data_dir = "/scratch/vl1019/han2020fa_data/"
+#data_dir = "/scratch/vl1019/han2020fa_data/"
+data_dir = "/scratch/hh2263/drum_data/"
 pickle_dir = os.path.join(data_dir, "han2020fa_sc-pkl")
-wav_dir = os.path.join(data_dir, "han2020fa_wav")
+#wav_dir = os.path.join(data_dir, "han2020fa_wav")
+wav_dir = data_dir
 os.makedirs(pickle_dir, exist_ok=True)
 
 
@@ -37,7 +39,7 @@ sample_ids = df.values[:, 0]
 
 
 # Define scattering operator
-N = 2 ** 15
+N = 2 ** 16
 scattering = Scattering1D(J=J, shape=(N,), Q=Q, max_order=order)
 
 
@@ -59,7 +61,8 @@ y = df.values[:, 1:-1]
 
 # Export to pickle file.
 pickle_name = "_".join(
-    ["scattering", "J-" + str(J).zfill(2), "Q-" + str(Q).zfill(2), "order" + str(order)]
+    ["scattering",
+     "fold-"+str(fold_str),"J-" + str(J).zfill(2), "Q-" + str(Q).zfill(2), "order" + str(order)]
 )
 pickle_path = os.path.join(pickle_dir, pickle_name + ".pkl")
 with open(pickle_path, 'wb') as pickle_file:
