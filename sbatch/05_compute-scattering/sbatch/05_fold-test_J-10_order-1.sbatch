@@ -4,7 +4,7 @@
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=1
 #SBATCH --cpus-per-task=1
-#SBATCH --time=6:00:00
+#SBATCH --time=10:00:00
 #SBATCH --mem=8GB
 #SBATCH --output=../slurm/05_fold-test_J-10_order-1_%j.out
 

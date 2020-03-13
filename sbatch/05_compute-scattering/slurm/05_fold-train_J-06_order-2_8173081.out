@@ -1,0 +1,17 @@
+/opt/slurm/data/slurmd/job8173081/slurm_script: line 12: activate: No such file or directory
+2020-03-12 23:39:31.961341 Start.
+Computing scattering features.
+Traceback (most recent call last):
+  File "../../../src/05_compute-scattering.py", line 54, in <module>
+    Sx = np.array(scattering(torch_waveform).T)
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/kymatio/scattering1d/scattering1d.py", line 373, in __call__
+    return self.forward(x)
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/kymatio/scattering1d/scattering1d.py", line 360, in forward
+    size_scattering=size_scattering)
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/kymatio/scattering1d/scattering1d.py", line 653, in scattering
+    U0 = pad(x, pad_left=pad_left, pad_right=pad_right, to_complex=True)
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/kymatio/scattering1d/backend/backend_torch.py", line 235, in pad
+    output = pad_1d(x, pad_left, pad_right, mode='reflect')
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/kymatio/scattering1d/backend/backend_torch.py", line 201, in pad_1d
+    raise ValueError('Indefinite padding size (larger than tensor).')
+ValueError: Indefinite padding size (larger than tensor).
