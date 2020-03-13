@@ -1,0 +1,5 @@
+/opt/slurm/data/slurmd/job8164295/slurm_script: line 12: activate: No such file or directory
+Traceback (most recent call last):
+  File "../../../src/05_compute-scattering.py", line 10, in <module>
+    import tqdm
+ModuleNotFoundError: No module named 'tqdm'

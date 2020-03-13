@@ -1,0 +1,27 @@
+/opt/slurm/data/slurmd/job8155733/slurm_script: line 12: activate: No such file or directory
+Traceback (most recent call last):
+  File "../../../src/05_compute-scattering.py", line 2, in <module>
+    from kymatio import Scattering1D
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/kymatio/__init__.py", line 16, in <module>
+    from .scattering2d.scattering2d import Scattering2D
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/kymatio/scattering2d/__init__.py", line 4, in <module>
+    from .scattering2d import Scattering2D
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/kymatio/scattering2d/scattering2d.py", line 9, in <module>
+    from .filter_bank import filter_bank
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/kymatio/scattering2d/filter_bank.py", line 10, in <module>
+    from .utils import fft2
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/kymatio/scattering2d/utils.py", line 1, in <module>
+    import scipy.fftpack
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/scipy/__init__.py", line 156, in <module>
+    from . import fft
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/scipy/fft/__init__.py", line 76, in <module>
+    from ._basic import (
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/scipy/fft/_basic.py", line 1, in <module>
+    from scipy._lib.uarray import generate_multimethod, Dispatchable
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/scipy/_lib/uarray.py", line 27, in <module>
+    from ._uarray import *
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/scipy/_lib/_uarray/__init__.py", line 114, in <module>
+    from ._backend import *
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/scipy/_lib/_uarray/_backend.py", line 15, in <module>
+    from . import _uarray  # type: ignore
+ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.21' not found (required by /home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/scipy/_lib/_uarray/_uarray.cpython-37m-x86_64-linux-gnu.so)
