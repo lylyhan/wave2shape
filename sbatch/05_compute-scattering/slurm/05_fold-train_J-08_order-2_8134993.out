@@ -1,0 +1,5 @@
+/opt/slurm/data/slurmd/job8134993/slurm_script: line 12: activate: No such file or directory
+2020-03-11 18:55:52.574185 Start.
+Computing scattering features.
+2020-03-11 21:23:46.318961 Finish.
+Total elapsed time: 02:27:54.32.

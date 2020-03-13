@@ -9,7 +9,7 @@
 #SBATCH --output=../slurm/05_fold-test_J-06_order-2_%j.out
 
 module purge
-source activate w2s
+conda activate w2s
 
 # The first argument is the fold: training or validation.
 # The second argument is the quality factor.

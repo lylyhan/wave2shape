@@ -51,7 +51,7 @@ for fold in folds:
                     "../slurm/" + job_name + "_%j.out\n")
                 f.write("\n")
                 f.write("module purge\n")
-                f.write("source activate w2s\n")
+                f.write("conda activate w2s\n")
                 f.write("\n")
                 f.write("# The first argument is the fold: training or validation.\n")
                 f.write("# The second argument is the quality factor.\n")
