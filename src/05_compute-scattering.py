@@ -8,6 +8,7 @@ import pickle
 import time
 import torch
 import tqdm
+import sys
 
 # Define output path.
 #data_dir = "/scratch/vl1019/han2020fa_data/"
@@ -33,13 +34,13 @@ print("Computing scattering features.")
 
 
 # Load CSV file of physical parameters.
-csv_path = "../notebooks/" + fold_str + "_param.csv"
+csv_path = "../../../notebooks/" + fold_str + "_param.csv"
 df = pd.read_csv(csv_path)
 sample_ids = df.values[:, 0]
 
 
 # Define scattering operator
-N = 2 ** 16
+N = 2 ** 15
 scattering = Scattering1D(J=J, shape=(N,), Q=Q, max_order=order)
 
 
