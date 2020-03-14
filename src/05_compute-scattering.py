@@ -59,8 +59,10 @@ y = df.values[:, 1:-1]
 
 
 # Export to pickle file.
-pickle_name = "_".join(
-    ["scattering", "J-" + str(J).zfill(2), "Q-" + str(Q).zfill(2), "order" + str(order)]
+pickle_name = "_".join([
+    "scattering",
+    "J-" + str(J).zfill(2), "Q-" + str(Q).zfill(2), "order" + str(order),
+    "fold-" + str(fold_str)]
 )
 pickle_path = os.path.join(pickle_dir, pickle_name + ".pkl")
 with open(pickle_path, 'wb') as pickle_file:
