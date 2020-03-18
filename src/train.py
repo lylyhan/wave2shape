@@ -34,7 +34,7 @@ Q = int(args[2])
 
 #make the model
 #zoom factor can only be 1/4, 1/2
-def create_model_adjustable(J,Q,order,k_size,nchan_out,zoom_factor,activation):
+def create_model_adjustable(J,Q,order,k_size,nchan_out,activation):
     N = 2**15
     y = np.random.rand(N)
     scattering = Scattering1D(J = J,shape=(N,), Q = Q, max_order=order)
@@ -42,67 +42,50 @@ def create_model_adjustable(J,Q,order,k_size,nchan_out,zoom_factor,activation):
     input_x,input_y = Sy.shape
     nchan_in = 1       # number of input channels.  1 since it is BW
   
-    #adjustable input dimension!!!!
-    if zoom_factor == 0.5:
-        layer_size = 3
-    elif zoom_factor == 0.25:
-        layer_size = 2
-    elif zoom_factor == 1:
-        layer_size = 4
-        
-    zoomed_x = round(input_x * zoom_factor)
-    
-    
-    input_shape = (zoomed_x,input_y)#Sy.shape
-    kernel_size = (k_size,)
-    K.clear_session()
-    model=Sequential()
-    #1 conv layer +  1 batch normalization + nonlinear activation + pooling
-    model.add(Conv1D(input_shape=input_shape, filters=nchan_out,
-                     kernel_size=kernel_size, padding="same",name='conv1'))
-    model.add(BatchNormalization())
-    model.add(Activation("relu"))
-    model.add(AveragePooling1D(pool_size=(4,)))
-    
-   #second time
-    model.add(Conv1D(filters=nchan_out,
-                     kernel_size=kernel_size, padding="same",name='conv2' ))
-    model.add(BatchNormalization())
-    model.add(Activation("relu"))
-    model.add(AveragePooling1D(pool_size=(4,)))
-    
-    #third time
-    if layer_size>=3:
-        model.add(Conv1D(filters=nchan_out,
-                         kernel_size=kernel_size, padding="same",name='conv3' ))
-        model.add(BatchNormalization())
-        model.add(Activation("relu"))
-        model.add(AveragePooling1D(pool_size=(4,)))
-        if layer_size==4:
-        #fourth time
-            model.add(Conv1D(filters=nchan_out,
-                             kernel_size=kernel_size, padding="same",name='conv4' ))
-            model.add(BatchNormalization())
-            model.add(Activation("relu"))
-            model.add(AveragePooling1D(pool_size=(2,)))
-            if layer_size ==5:
-                model.add(Conv1D(filters=nchan_out,
-                             kernel_size=kernel_size, padding="same",name='conv5' ))
-                model.add(BatchNormalization())
-                model.add(Activation("relu"))
-                model.add(AveragePooling1D(pool_size=(2,)))
+    input_shape = (input_x,input_y)#Sy.shape
+	kernel_size = (k_size,)
+	K.clear_session()
+	model=Sequential()
+	#1 conv layer +  1 batch normalization + nonlinear activation + pooling
+	model.add(BatchNormalization(input_shape=input_shape))
+	model.add(Conv1D(filters=nchan_out,
+	                 kernel_size=kernel_size, padding="same",name='conv1'))
+	#model.add(BatchNormalization())
+	model.add(Activation("relu"))
 
-    model.add(BatchNormalization())
-    model.add(Flatten())
-    model.add(Dense(64, activation='relu'))
-    model.add(BatchNormalization())
-    #what activation should be chosen for last layer, for regression problem? should be a linear function
-    model.add(Dense(5, activation=activation)) #output layer that corresponds to the 5 physical parameters.
+	if model.layers[-1].output_shape[1]>=4:
+	    pool = 4
+	elif model.layers[-1].output_shape[1]==2:
+	    pool = 2
+	    
+	model.add(AveragePooling1D(pool_size=(pool,)))
 
 
-    # Compile the model
-    model.compile(loss='mse', optimizer='adam', metrics=['mse'])
-    
+	for i in range(3):
+	    model.add(Conv1D(filters=nchan_out,
+	                 kernel_size=kernel_size, padding="same" ))
+	    model.add(BatchNormalization())
+	    model.add(Activation("relu"))
+	    #print('before pool',model.layers[-1].output_shape)
+	    if model.layers[-1].output_shape[1] >= 4:
+	        model.add(AveragePooling1D(pool_size=(4,)))
+	    elif model.layers[-1].output_shape[1] == 2:
+	        model.add(AveragePooling1D(pool_size=(2,)))
+	    #print(model.layers[-1].output_shape)
+
+	model.add(BatchNormalization())
+	model.add(Flatten())
+	model.add(Dense(64, activation='relu'))
+	model.add(BatchNormalization())
+	#what activation should be chosen for last layer, for regression problem? should be a linear function
+	model.add(Dense(5, activation='linear')) #output layer that corresponds to the 5 physical parameters.
+
+
+	# Compile the model
+	model.compile(loss='mse', optimizer='adam', metrics=['mse'])
+
+
+
 
     return model
 
@@ -171,7 +154,7 @@ m = bs*steps_per_epoch
 idx = np.arange(0,n,1)
 val_loss=[]
 train_loss = []
-model_adjustable = create_model_adjustable(J=J,Q=Q,order=order,k_size=8,nchan_out=16,zoom_factor=zoom_factor,activation='linear')
+model_adjustable = create_model_adjustable(J=J,Q=Q,order=order,k_size=8,nchan_out=16,activation='linear')
 #model_adjustable.summary()
 for epoch in range(30):
     np.random.shuffle(idx)
