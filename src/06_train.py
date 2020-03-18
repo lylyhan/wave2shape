@@ -12,7 +12,7 @@ from tensorflow.keras.layers import BatchNormalization
 from tensorflow.keras.callbacks import EarlyStopping, CSVLogger, ModelCheckpoint
 import IPython.display as ipd
 from kymatio import Scattering1D
-import hitdifferentparts
+#import hitdifferentparts
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 import pescador
@@ -22,7 +22,7 @@ import librosa
 import pickle
 import matplotlib.pyplot as plt
 import math
-
+import sys
 
 
 # Parse input arguments.
@@ -167,7 +167,7 @@ for epoch in range(30):
 		#epoch_str = "epoch-" + str(epoch).zfill(3)
 		epoch_network_path = os.path.join(
 		   trial_dir, "_".join([ "J-" + str(J).zfill(2), "Q-" + str(Q).zfill(2), "order" + str(order)]) + ".h5")
-		model.save(epoch_network_path)
+		model_adjustable.save(epoch_network_path)
 
 
 
