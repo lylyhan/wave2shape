@@ -35,43 +35,43 @@ Q = 1
 #make the model
 #zoom factor can only be 1/4, 1/2
 def create_model_adjustable(J,Q,order,k_size,nchan_out,activation):
-    N = 2**15
-    y = np.random.rand(N)
-    scattering = Scattering1D(J = J,shape=(N,), Q = Q, max_order=order)
-    Sy = np.array(scattering(torch.Tensor(y))).T
-    input_x,input_y = Sy.shape
-    nchan_in = 1       # number of input channels.  1 since it is BW
-  
-    input_shape = (input_x,input_y)#Sy.shape
+	N = 2**15
+	y = np.random.rand(N)
+	scattering = Scattering1D(J = J,shape=(N,), Q = Q, max_order=order)
+	Sy = np.array(scattering(torch.Tensor(y))).T
+	input_x,input_y = Sy.shape
+	nchan_in = 1       # number of input channels.  1 since it is BW
+
+	input_shape = (input_x,input_y)#Sy.shape
 	kernel_size = (k_size,)
 	K.clear_session()
 	model=Sequential()
 	#1 conv layer +  1 batch normalization + nonlinear activation + pooling
 	model.add(BatchNormalization(input_shape=input_shape))
 	model.add(Conv1D(filters=nchan_out,
-	                 kernel_size=kernel_size, padding="same",name='conv1'))
+		kernel_size=kernel_size, padding="same",name='conv1'))
 	#model.add(BatchNormalization())
 	model.add(Activation("relu"))
 
 	if model.layers[-1].output_shape[1]>=4:
-	    pool = 4
+		pool = 4
 	elif model.layers[-1].output_shape[1]==2:
-	    pool = 2
+		pool = 2
 	    
 	model.add(AveragePooling1D(pool_size=(pool,)))
 
 
 	for i in range(3):
-	    model.add(Conv1D(filters=nchan_out,
-	                 kernel_size=kernel_size, padding="same" ))
-	    model.add(BatchNormalization())
-	    model.add(Activation("relu"))
-	    #print('before pool',model.layers[-1].output_shape)
-	    if model.layers[-1].output_shape[1] >= 4:
-	        model.add(AveragePooling1D(pool_size=(4,)))
-	    elif model.layers[-1].output_shape[1] == 2:
-	        model.add(AveragePooling1D(pool_size=(2,)))
-	    #print(model.layers[-1].output_shape)
+		model.add(Conv1D(filters=nchan_out,
+		             kernel_size=kernel_size, padding="same" ))
+		model.add(BatchNormalization())
+		model.add(Activation("relu"))
+		#print('before pool',model.layers[-1].output_shape)
+		if model.layers[-1].output_shape[1] >= 4:
+			model.add(AveragePooling1D(pool_size=(4,)))
+		elif model.layers[-1].output_shape[1] == 2:
+			model.add(AveragePooling1D(pool_size=(2,)))
+		#print(model.layers[-1].output_shape)
 
 	model.add(BatchNormalization())
 	model.add(Flatten())
@@ -87,15 +87,15 @@ def create_model_adjustable(J,Q,order,k_size,nchan_out,activation):
 
 
 
-    return model
+	return model
 
 pkl_dir = '/scratch/hh2263/drum_data/han2020fa_sc-pkl/'
 #J = 8
 #Q = 1
 #order = 2
 pickle_name = "_".join(
-    ["scattering",
-     "J-" + str(J).zfill(2), "Q-" + str(Q).zfill(2), "order" + str(order)]
+	["scattering",
+	"J-" + str(J).zfill(2), "Q-" + str(Q).zfill(2), "order" + str(order)]
 )
 
 pkl_path_train = os.path.join(pkl_dir,pickle_name+"_fold-train.pkl")
@@ -112,18 +112,9 @@ Sy_test,y_test = pickle.load(pkl_test)
 
 #log scale p and D
 for idx in range(2,4):
-    y_train[:,idx] = [math.log10(i) for i in y_train[:,idx]]
-    y_test[:,idx] = [math.log10(i) for i in y_test[:,idx]]
-    y_val[:,idx] = [math.log10(i) for i in y_val[:,idx]]
-
-#df_train = pd.read_csv("../notebooks/train_param.csv")
-#df_test = pd.read_csv("../notebooks/test_param.csv")
-#df_val = pd.read_csv("../notebooks/val_param.csv")
-#df_full = pd.read_csv("../notebooks/diffshapes_param.csv")
-
-#params = df_train.values[:,1:-1]
-#for idx in range(2,4):
-#    params[:,idx] = [math.log10(i) for i in params[:,idx]]
+	y_train[:,idx] = [math.log10(i) for i in y_train[:,idx]]
+	y_test[:,idx] = [math.log10(i) for i in y_test[:,idx]]
+	y_val[:,idx] = [math.log10(i) for i in y_val[:,idx]]
 
 # normalization of the physical parameters
 scaler = MinMaxScaler()
@@ -157,27 +148,27 @@ train_loss = []
 model_adjustable = create_model_adjustable(J=J,Q=Q,order=order,k_size=8,nchan_out=16,activation='linear')
 #model_adjustable.summary()
 for epoch in range(30):
-    np.random.shuffle(idx)
-    Sy_temp = Sy_train_log2[idx[:m],:shape_time,:]
-    y_temp = y_train_normalized[idx[:m],:]
-    
-    hist = model_adjustable.fit(Sy_temp,
-                y_temp,
-                epochs=1,
-                verbose=2,
-                batch_size=bs,
-                validation_data = (Sy_val_log2[:,-shape_time:,:],y_val_normalized),
-                use_multiprocessing=False)
-    validation_loss = hist.history['val_loss'][0]
-    val_loss.append(validation_loss)
-    train_loss.append(hist.history['loss'][0])
-    if validation_loss < best_validation_loss:
-        best_validation_loss = validation_loss
-        #epoch_str = "epoch-" + str(epoch).zfill(3)
-        epoch_network_path = os.path.join(
-           trial_dir, "_".join([ "J-" + str(J).zfill(2), "Q-" + str(Q).zfill(2), "order" + str(order)]) + ".h5")
-        model.save(epoch_network_path)
-        
+	np.random.shuffle(idx)
+	Sy_temp = Sy_train_log2[idx[:m],:shape_time,:]
+	y_temp = y_train_normalized[idx[:m],:]
+
+	hist = model_adjustable.fit(Sy_temp,
+				y_temp,
+				epochs=1,
+				verbose=2,
+				batch_size=bs,
+				validation_data = (Sy_val_log2[:,-shape_time:,:],y_val_normalized),
+				use_multiprocessing=False)
+	validation_loss = hist.history['val_loss'][0]
+	val_loss.append(validation_loss)
+	train_loss.append(hist.history['loss'][0])
+	if validation_loss < best_validation_loss:
+		best_validation_loss = validation_loss
+		#epoch_str = "epoch-" + str(epoch).zfill(3)
+		epoch_network_path = os.path.join(
+		   trial_dir, "_".join([ "J-" + str(J).zfill(2), "Q-" + str(Q).zfill(2), "order" + str(order)]) + ".h5")
+		model.save(epoch_network_path)
+
 
 
 

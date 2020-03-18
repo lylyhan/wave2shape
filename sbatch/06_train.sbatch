@@ -7,7 +7,7 @@
 #SBATCH --time=12:00:00
 #SBATCH --mem=62GB
 #SBATCH --gres=gpu:1
-#SBATCH --output=/home/hh2263/wave2shape/slurm/slurm_test_full_w_loop_.out   
+#SBATCH --output=/home/hh2263/wave2shape/slurm/slurm_diff_J.out   
 
 
 module purge
