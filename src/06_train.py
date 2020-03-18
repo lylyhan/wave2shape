@@ -29,7 +29,7 @@ import math
 args = sys.argv[1:]
 J = int(args[0])
 order = int(args[1])
-Q = int(args[2])
+Q = 1
 
 
 #make the model
@@ -78,7 +78,7 @@ def create_model_adjustable(J,Q,order,k_size,nchan_out,activation):
 	model.add(Dense(64, activation='relu'))
 	model.add(BatchNormalization())
 	#what activation should be chosen for last layer, for regression problem? should be a linear function
-	model.add(Dense(5, activation='linear')) #output layer that corresponds to the 5 physical parameters.
+	model.add(Dense(5, activation=activation)) #output layer that corresponds to the 5 physical parameters.
 
 
 	# Compile the model
@@ -95,18 +95,18 @@ pkl_dir = '/scratch/hh2263/drum_data/han2020fa_sc-pkl/'
 #order = 2
 pickle_name = "_".join(
     ["scattering",
-     "J-" + str(J).zfill(2), "Q-" + str(Q).zfill(2), "order" + str(order),"fold-"+str(fold_str)]
+     "J-" + str(J).zfill(2), "Q-" + str(Q).zfill(2), "order" + str(order)]
 )
 
-pkl_path_train = os.path.join(pkl_dir,pickle_name+"fold-train.pkl")
+pkl_path_train = os.path.join(pkl_dir,pickle_name+"_fold-train.pkl")
 pkl_train = open(pkl_path_train, 'rb')
 Sy_train,y_train = pickle.load(pkl_train) 
 
-pkl_path_val = os.path.join(pkl_dir,pickle_name+"fold-val.pkl")
+pkl_path_val = os.path.join(pkl_dir,pickle_name+"_fold-val.pkl")
 pkl_val = open(pkl_path_val,'rb')
 Sy_val,y_val = pickle.load(pkl_val)
 
-pkl_path_test = os.path.join(pkl_dir,pickle_name+"fold-test.pkl")
+pkl_path_test = os.path.join(pkl_dir,pickle_name+"_fold-test.pkl")
 pkl_test = open(pkl_path_test,'rb')
 Sy_test,y_test = pickle.load(pkl_test)
 
