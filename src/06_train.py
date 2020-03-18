@@ -12,7 +12,6 @@ from tensorflow.keras.layers import BatchNormalization
 from tensorflow.keras.callbacks import EarlyStopping, CSVLogger, ModelCheckpoint
 import IPython.display as ipd
 from kymatio import Scattering1D
-import hitdifferentparts
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 import pescador
@@ -22,7 +21,7 @@ import librosa
 import pickle
 import matplotlib.pyplot as plt
 import math
-
+import sys
 
 
 # Parse input arguments.
@@ -145,7 +144,9 @@ m = bs*steps_per_epoch
 idx = np.arange(0,n,1)
 val_loss=[]
 train_loss = []
+test_loss = []
 model_adjustable = create_model_adjustable(J=J,Q=Q,order=order,k_size=8,nchan_out=16,activation='linear')
+save_log = os.path.join(trial_dir,pickle_name+"_score.pkl")
 #model_adjustable.summary()
 for epoch in range(30):
 	np.random.shuffle(idx)
@@ -159,18 +160,25 @@ for epoch in range(30):
 				batch_size=bs,
 				validation_data = (Sy_val_log2[:,-shape_time:,:],y_val_normalized),
 				use_multiprocessing=False)
+
 	validation_loss = hist.history['val_loss'][0]
+
+	test_loss.append(model_adjustable.evaluate(Sy_test_log2,y_test_normalized)[0])
 	val_loss.append(validation_loss)
 	train_loss.append(hist.history['loss'][0])
+
 	if validation_loss < best_validation_loss:
 		best_validation_loss = validation_loss
 		#epoch_str = "epoch-" + str(epoch).zfill(3)
 		epoch_network_path = os.path.join(
 		   trial_dir, "_".join([ "J-" + str(J).zfill(2), "Q-" + str(Q).zfill(2), "order" + str(order)]) + ".h5")
-		model.save(epoch_network_path)
+		model_adjustable.save(epoch_network_path)
 
 
 
+		with open(save_log, 'wb') as filehandle:
+		    # store the data as binary data stream
+		    pickle.dump([val_loss[-1],train_loss[-1],test_loss[-1]], filehandle)
 
 
 
