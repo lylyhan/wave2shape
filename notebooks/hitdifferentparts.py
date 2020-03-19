@@ -31,9 +31,15 @@ def hitdiffparts(r1,r2,w11,tau11, p, D,alpha):
     #w11=200 * 2 * np.pi#range 200hz-1200hz
     #tau11 = 0.2#range 0.01-0.3
     s11 = -1/tau11
+<<<<<<< HEAD
     #p = 0.3 #how round the sound is, smaller the rougher(metal), range 0-0.3
     #D = 0.01 #inharmonicity in smaller values, range 0-10
     #alpha = 1 #range 0-5
+=======
+    p = 0.3 #how round the sound is, smaller the rougher(metal), range 0-0.3
+    D = 0.01 #inharmonicity in smaller values, range 0-10
+    alpha = 1 #range 0-5
+>>>>>>> 1689724d67893f842057d47e5b91d53eb9518ea8
     m1 = 5
     m2 = 5
     l = np.pi

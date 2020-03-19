@@ -133,6 +133,7 @@ Sy_test_log2 = np.log1p((Sy_test>0)*Sy_test/eps)
 
 
 trial_dir = "../output/10trials/tests"+str(trial)+"/"
+
 os.makedirs(trial_dir, exist_ok=True)
 best_validation_loss = np.inf
 zoom_factor = 1
@@ -148,6 +149,7 @@ test_loss = []
 model_adjustable = create_model_adjustable(J=J,Q=Q,order=order,k_size=8,nchan_out=16,activation='linear')
 save_log = os.path.join(trial_dir,pickle_name+"_score.pkl")
 #model_adjustable.summary()
+print('Start fitting the model...')
 for epoch in range(30):
 	np.random.shuffle(idx)
 	Sy_temp = Sy_train_log2[idx[:m],:shape_time,:]
@@ -180,7 +182,7 @@ for epoch in range(30):
 		    # store the data as binary data stream
 		    pickle.dump([val_loss[-1],train_loss[-1],test_loss[-1]], filehandle)
 
-
+print('Finished!')
 
 
 
