@@ -29,7 +29,7 @@ args = sys.argv[1:]
 J = int(args[0])
 order = int(args[1])
 Q = 1
-
+trial = int(args[2])
 
 #make the model
 #zoom factor can only be 1/4, 1/2
@@ -132,7 +132,7 @@ Sy_test_log2 = np.log1p((Sy_test>0)*Sy_test/eps)
 #train the model
 
 
-trial_dir = "../output/tests/"
+trial_dir = "../output/10trials/tests"+str(trial)+"/"
 os.makedirs(trial_dir, exist_ok=True)
 best_validation_loss = np.inf
 zoom_factor = 1

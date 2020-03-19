@@ -26,14 +26,14 @@ def get_del_k(m1,m2,omega,x1,x2,l,alpha):
     return k
 
 
-def hitdiffparts(r1,r2):
+def hitdiffparts(r1,r2,w11,tau11, p, D,alpha):
     
-    w11=200 * 2 * np.pi#range 200hz-1200hz
-    tau11 = 0.2#range 0.01-0.3
+    #w11=200 * 2 * np.pi#range 200hz-1200hz
+    #tau11 = 0.2#range 0.01-0.3
     s11 = -1/tau11
-    p = 0.3 #how round the sound is, smaller the rougher(metal), range 0-0.3
-    D = 0 #inharmonicity in smaller values, range 0-10
-    alpha = 1 #range 0-5
+    #p = 0.3 #how round the sound is, smaller the rougher(metal), range 0-0.3
+    #D = 0.01 #inharmonicity in smaller values, range 0-10
+    #alpha = 1 #range 0-5
     m1 = 5
     m2 = 5
     l = np.pi
@@ -54,7 +54,7 @@ def hitdiffparts(r1,r2):
             k[i,j] = get_del_k(i+1,j+1,omega[i,j],x1,x2,l,alpha)
     
     sr = 44100
-    dur = 2**16
+    dur = 2**15
     start_time = time.time()
 
     y = []
