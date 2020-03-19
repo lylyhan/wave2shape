@@ -32,7 +32,7 @@ def hitdiffparts(r1,r2):
     tau11 = 0.2#range 0.01-0.3
     s11 = -1/tau11
     p = 0.3 #how round the sound is, smaller the rougher(metal), range 0-0.3
-    D = 0 #inharmonicity in smaller values, range 0-10
+    D = 0.01 #inharmonicity in smaller values, range 0-10
     alpha = 1 #range 0-5
     m1 = 5
     m2 = 5
