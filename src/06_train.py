@@ -29,7 +29,10 @@ args = sys.argv[1:]
 J = int(args[0])
 order = int(args[1])
 Q = 1
-trial = int(args[2])
+
+index = int(args[2])
+eps = 10**(-index)
+trial = int(args[3])
 
 #make the model
 #zoom factor can only be 1/4, 1/2
@@ -123,7 +126,7 @@ y_val_normalized = scaler.transform(y_val)
 y_test_normalized = scaler.transform(y_test)
 
 #log scale the input
-eps = 1e-11
+#eps = 1e-11
 Sy_train_log2 = np.log1p(((Sy_train>0)*Sy_train)/eps)
 Sy_val_log2 = np.log1p(((Sy_val>0)*Sy_val)/eps)
 Sy_test_log2 = np.log1p((Sy_test>0)*Sy_test/eps)
@@ -132,7 +135,7 @@ Sy_test_log2 = np.log1p((Sy_test>0)*Sy_test/eps)
 #train the model
 
 
-trial_dir = "../output/10trials/tests"+str(trial)+"/"
+trial_dir = "../output/10trials_"+str(index)+"/tests"+str(trial)+"/"
 
 os.makedirs(trial_dir, exist_ok=True)
 best_validation_loss = np.inf
