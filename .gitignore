@@ -1,2 +1,7 @@
 .ipynb_checkpoints/
 output/
+./env_setting.txt
+notebooks/*.wav
+notebooks/__pycache__/
+
+
