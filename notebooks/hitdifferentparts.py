@@ -54,7 +54,7 @@ def hitdiffparts(r1,r2,w11,tau11, p, D,alpha):
             #k[i,j] = getk(i+1,j+1,omega[i,j],getf(i+1,1,300),getf(j+1,alpha,300))
             k[i,j] = get_del_k(i+1,j+1,omega[i,j],x1,x2,l,alpha)
     
-    sr = 44100
+    sr = 22050
     dur = 2**15
     start_time = time.time()
 
@@ -69,7 +69,6 @@ def hitdiffparts(r1,r2,w11,tau11, p, D,alpha):
     print("--- %s seconds ---" % (time.time() - start_time))
     #ipd.Audio(y2,rate=sr)
     return y2
-
 
 def approxnorm(l,mu,s,tau):
     h = l/tau
@@ -134,3 +133,4 @@ def getsounds_imp_gaus(m1,m2,r1,r2,w11,tau11,p,D,alpha,sr):
         y.append(np.sum(np.sum(k * np.exp(sigma * t/sr) * np.sin(omega * t/sr))))
     y = y/max(y)
     return y
+

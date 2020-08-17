@@ -1,0 +1,119 @@
+WARNING:tensorflow:From /home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+2020-03-23 13:37:34.735338: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-03-23 13:37:34.769542: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1618] Found device 0 with properties: 
+name: Tesla V100-SXM2-32GB major: 7 minor: 0 memoryClockRate(GHz): 1.53
+pciBusID: 0000:18:00.0
+2020-03-23 13:37:34.958322: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2020-03-23 13:37:35.155328: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+2020-03-23 13:37:35.348810: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+2020-03-23 13:37:35.544320: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+2020-03-23 13:37:35.738188: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+2020-03-23 13:37:35.934717: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+2020-03-23 13:37:36.150478: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-23 13:37:36.153784: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1746] Adding visible gpu devices: 0
+2020-03-23 13:37:36.154194: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 AVX512F FMA
+2020-03-23 13:37:36.160184: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2500000000 Hz
+2020-03-23 13:37:36.160359: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x557062c26c10 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-03-23 13:37:36.160378: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2020-03-23 13:37:36.161904: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1618] Found device 0 with properties: 
+name: Tesla V100-SXM2-32GB major: 7 minor: 0 memoryClockRate(GHz): 1.53
+pciBusID: 0000:18:00.0
+2020-03-23 13:37:36.161939: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2020-03-23 13:37:36.161951: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+2020-03-23 13:37:36.161961: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+2020-03-23 13:37:36.161972: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+2020-03-23 13:37:36.161982: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+2020-03-23 13:37:36.161993: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+2020-03-23 13:37:36.162003: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-23 13:37:36.165115: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1746] Adding visible gpu devices: 0
+2020-03-23 13:37:36.165144: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2020-03-23 13:37:36.264434: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1159] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-03-23 13:37:36.264472: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1165]      0 
+2020-03-23 13:37:36.264481: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1178] 0:   N 
+2020-03-23 13:37:36.269429: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1304] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 30584 MB memory) -> physical GPU (device: 0, name: Tesla V100-SXM2-32GB, pci bus id: 0000:18:00.0, compute capability: 7.0)
+2020-03-23 13:37:36.271157: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x557063522e00 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2020-03-23 13:37:36.271174: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Tesla V100-SXM2-32GB, Compute Capability 7.0
+2020-03-23 13:37:37.990437: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+2020-03-23 13:37:38.210939: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-23 13:37:39.390196: W tensorflow/stream_executor/cuda/redzone_allocator.cc:312] Not found: ./bin/ptxas not found
+Relying on driver to perform ptx compilation. This message will be only logged once.
+Start fitting the model...
+Train on 3200 samples, validate on 7776 samples
+3200/3200 - 108s - loss: 0.4504 - mean_squared_error: 0.4504 - val_loss: 0.1295 - val_mean_squared_error: 0.1295
+   32/10000 [..............................] - ETA: 0s - loss: 0.2011 - mean_squared_error: 0.2011  928/10000 [=>............................] - ETA: 0s - loss: 0.1873 - mean_squared_error: 0.1873 1824/10000 [====>.........................] - ETA: 0s - loss: 0.1895 - mean_squared_error: 0.1895 2720/10000 [=======>......................] - ETA: 0s - loss: 0.1894 - mean_squared_error: 0.1894 3616/10000 [=========>....................] - ETA: 0s - loss: 0.1870 - mean_squared_error: 0.1870 4512/10000 [============>.................] - ETA: 0s - loss: 0.1872 - mean_squared_error: 0.1872 5376/10000 [===============>..............] - ETA: 0s - loss: 0.1876 - mean_squared_error: 0.1876 6272/10000 [=================>............] - ETA: 0s - loss: 0.1874 - mean_squared_error: 0.1874 7168/10000 [====================>.........] - ETA: 0s - loss: 0.1881 - mean_squared_error: 0.1881 8064/10000 [=======================>......] - ETA: 0s - loss: 0.1879 - mean_squared_error: 0.1879 8960/10000 [=========================>....] - ETA: 0s - loss: 0.1885 - mean_squared_error: 0.1885 9856/10000 [============================>.] - ETA: 0s - loss: 0.1880 - mean_squared_error: 0.188010000/10000 [==============================] - 29s 3ms/sample - loss: 0.1880 - mean_squared_error: 0.1880
+WARNING:tensorflow:From /home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+2020-03-23 14:02:39.366515: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-03-23 14:02:39.416396: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1618] Found device 0 with properties: 
+name: Tesla V100-SXM2-32GB major: 7 minor: 0 memoryClockRate(GHz): 1.53
+pciBusID: 0000:18:00.0
+2020-03-23 14:02:39.609257: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2020-03-23 14:02:39.806308: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+2020-03-23 14:02:40.006682: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+2020-03-23 14:02:40.204170: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+2020-03-23 14:02:40.404059: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+2020-03-23 14:02:40.603097: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+2020-03-23 14:02:40.808746: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-23 14:02:40.812040: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1746] Adding visible gpu devices: 0
+2020-03-23 14:02:40.812457: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 AVX512F FMA
+2020-03-23 14:02:40.818404: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2500000000 Hz
+2020-03-23 14:02:40.818580: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55d43a660a90 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-03-23 14:02:40.818599: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2020-03-23 14:02:40.820311: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1618] Found device 0 with properties: 
+name: Tesla V100-SXM2-32GB major: 7 minor: 0 memoryClockRate(GHz): 1.53
+pciBusID: 0000:18:00.0
+2020-03-23 14:02:40.820347: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2020-03-23 14:02:40.820359: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+2020-03-23 14:02:40.820370: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+2020-03-23 14:02:40.820380: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+2020-03-23 14:02:40.820390: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+2020-03-23 14:02:40.820400: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+2020-03-23 14:02:40.820411: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-23 14:02:40.823541: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1746] Adding visible gpu devices: 0
+2020-03-23 14:02:40.823570: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2020-03-23 14:02:40.926855: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1159] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-03-23 14:02:40.926895: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1165]      0 
+2020-03-23 14:02:40.926904: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1178] 0:   N 
+2020-03-23 14:02:40.931851: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1304] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 30584 MB memory) -> physical GPU (device: 0, name: Tesla V100-SXM2-32GB, pci bus id: 0000:18:00.0, compute capability: 7.0)
+2020-03-23 14:02:40.933546: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55d43af5ce50 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2020-03-23 14:02:40.933562: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Tesla V100-SXM2-32GB, Compute Capability 7.0
+2020-03-23 14:02:42.653012: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+2020-03-23 14:02:42.870924: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-23 14:02:44.040599: W tensorflow/stream_executor/cuda/redzone_allocator.cc:312] Not found: ./bin/ptxas not found
+Relying on driver to perform ptx compilation. This message will be only logged once.
+Start fitting the model...
+Train on 3200 samples, validate on 7776 samples
+3200/3200 - 113s - loss: 0.4274 - mean_squared_error: 0.4274 - val_loss: 0.1053 - val_mean_squared_error: 0.1053
+   32/10000 [..............................] - ETA: 0s - loss: 0.1993 - mean_squared_error: 0.1993  896/10000 [=>............................] - ETA: 0s - loss: 0.1686 - mean_squared_error: 0.1686 1760/10000 [====>.........................] - ETA: 0s - loss: 0.1691 - mean_squared_error: 0.1691 2624/10000 [======>.......................] - ETA: 0s - loss: 0.1698 - mean_squared_error: 0.1698 3488/10000 [=========>....................] - ETA: 0s - loss: 0.1691 - mean_squared_error: 0.1691 4352/10000 [============>.................] - ETA: 0s - loss: 0.1690 - mean_squared_error: 0.1690 5216/10000 [==============>...............] - ETA: 0s - loss: 0.1690 - mean_squared_error: 0.1690 6112/10000 [=================>............] - ETA: 0s - loss: 0.1693 - mean_squared_error: 0.1693 6976/10000 [===================>..........] - ETA: 0s - loss: 0.1697 - mean_squared_error: 0.1697 7840/10000 [======================>.......] - ETA: 0s - loss: 0.1701 - mean_squared_error: 0.1701 8736/10000 [=========================>....] - ETA: 0s - loss: 0.1702 - mean_squared_error: 0.1702 9600/10000 [===========================>..] - ETA: 0s - loss: 0.1701 - mean_squared_error: 0.170110000/10000 [==============================] - 30s 3ms/sample - loss: 0.1699 - mean_squared_error: 0.1699
+Traceback (most recent call last):
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/tensorflow_core/python/keras/saving/hdf5_format.py", line 111, in save_model_to_hdf5
+    f.flush()
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/h5py/_hl/files.py", line 452, in flush
+    h5f.flush(self.id)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5f.pyx", line 146, in h5py.h5f.flush
+RuntimeError: Unable to flush file's cached information (file write failed: time = Mon Mar 23 14:05:06 2020
+, filename = '../output/10trials/tests8/J-08_Q-01_order2.h5', file descriptor = 31, errno = 5, error message = 'Input/output error', buf = 0x55d4579601e0, total write size = 6632, bytes this sub-write = 6632, bytes actually written = 18446744073709551615, offset = 128656)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/hh2263/wave2shape/src/06_train.py", line 177, in <module>
+    model_adjustable.save(epoch_network_path)
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/tensorflow_core/python/keras/engine/network.py", line 1171, in save
+    signatures)
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/tensorflow_core/python/keras/saving/save.py", line 109, in save_model
+    model, filepath, overwrite, include_optimizer)
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/tensorflow_core/python/keras/saving/hdf5_format.py", line 114, in save_model_to_hdf5
+    f.close()
+  File "/home/hh2263/miniconda3/envs/drum-1.15/lib/python3.7/site-packages/h5py/_hl/files.py", line 443, in close
+    h5i.dec_ref(id_)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5i.pyx", line 150, in h5py.h5i.dec_ref
+RuntimeError: Can't decrement id ref count (file write failed: time = Mon Mar 23 14:05:06 2020
+, filename = '../output/10trials/tests8/J-08_Q-01_order2.h5', file descriptor = 31, errno = 5, error message = 'Input/output error', buf = 0x55d43b8c70a0, total write size = 1904, bytes this sub-write = 1904, bytes actually written = 18446744073709551615, offset = 228936)

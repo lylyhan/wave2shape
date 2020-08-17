@@ -121,7 +121,7 @@ def getscaler():
 	df_train = pd.read_csv("../notebooks/train_param.csv")
 	params = df_train.values[:,1:-1]
 	for idx in range(2,4):
-    	params[:,idx] = [math.log10(i) for i in params[:,idx]]
+		params[:,idx] = [math.log10(i) for i in params[:,idx]]
 
 	scaler = MinMaxScaler()
 	scaler.fit(params)
@@ -183,21 +183,9 @@ def create_model_adjustable(J,Q,order,k_size,nchan_out,activation):
 
 	return model
 
-def interpolate_shape(x,y,num,prec,J_sound,J_model,model_path,w,tau,p,D,alpha):
-	Sy_interpolated = interpolate_sounds(x,y,num,prec,J_sound,w,tau,p,D,alpha)#this J should be small to recover sound	
-	y_interpolated,history = regress_signal(
-        Sy_interpolated, N=2**15, J=J, learning_rate=100, 
-        bold_driver_accelerator=1.1,
-        bold_driver_brake=0.6,
-        momentum=0.9, 
-        NAG = False,
-        n_iterations=100, 
-        cost = "mse", 
-        verbose=True)
-
-	#prepare scattering feature
-	y_interpolated = y_interpolated.detach().numpy()
-	Sy_interpolated = getsc(torch.Tensor(y_interpolated),J_model) #this J should be the same with model
+def interpolate_shape(x,y,num,prec,J,model_path,w,tau,p,D,alpha):
+    #prepare scattering features 
+	Sy_interpolated,sounds = interpolate_sounds(x,y,num,prec,J,w,tau,p,D,alpha)#this J should be small to recover sound	
 	Sy_interpolated_log = np.log1p(((Sy_interpolated>0)*Sy_interpolated)/1e-11)
 	Sy_interpolated_log = Sy_interpolated_log.T
 	n,m = Sy_interpolated_log.shape
@@ -205,14 +193,14 @@ def interpolate_shape(x,y,num,prec,J_sound,J_model,model_path,w,tau,p,D,alpha):
 	#prepare normalized ground truth
 	scaler = getscaler()
 	gt_original = np.array([w,tau,p,D,alpha]).reshape((1,5))
-	gt_normalized = scaler.transform(np.array(y_test).reshape((1,5)))
+	gt_normalized = scaler.transform(gt_original)
 
 	#prepare model
-	model_best = create_model_adjustable(J_model,1,2,k_size=8,nchan_out=16,activation='linear')
+	model_best = create_model_adjustable(J,1,2,k_size=8,nchan_out=16,activation='linear')
 	model_best.load_weights(model_path)
 	hist = model_best.evaluate(np.array(Sy_interpolated_log).reshape(1,n,m),gt_normalized)
-
-	return hist
+	model_predict = model_best.predict(Sy_interpolated_log.reshape(1,n,m))
+	return hist,model_predict
 
 
 
