@@ -145,7 +145,7 @@ def getsounds_bil(m1,m2,w11,tau11,p,D,alpha,sr):
     x_1 = 0.0
     x_2 = 0.0
     sr= 44100
-    c = 2*sr
+    c = sr*2
 
     a1 = c**2+sigma*sigma - 2*sigma*c + omega*omega
     a2 = 2*omega*omega - 2*c**2 + 2*sigma*sigma
@@ -166,5 +166,60 @@ def getsounds_bil(m1,m2,w11,tau11,p,D,alpha,sr):
 
             
     return y_bt
+
+
+def get_gaus_k(m1,m2,omega,f1,f2, x1,x2,l,alpha):
+    l2 = l * alpha
+    if x1 > l:
+        x1 = 0
+    if x2 > l2:
+        x2 = 0
+    k = f1 * f2 * np.sin(m1 * np.pi * x1/l) * np.sin(m2 * np.pi * x2/l2)/ omega #assuming x1,x2 at center of the surface
+    k = np.round(k,10)
+    return k
+
+
+#calculate integral and approximate excitation function with gaussian distribution
+def get_gaus_f(m,l,tau,r):
+    #trapezoid rule to integrate f(x)sin(mpix) from 0 to l
+    #(f(a)+f(b))*(b-a)/2
+    integral = 0
+    x = approxnorm(l,l*r,0.4,tau)
+    h = l/tau
+    for i in range(tau):
+        #x(i+2)
+        #print(x.shape,x[0],x[0,1])
+        integral = integral + (x[i] * np.sin(m * np.pi * i * h/l) + x[i+1] * np.sin(m * np.pi * (i + 1) * h/l))*h/2
+    integral = integral*2/l
+    return integral
+
+def getsounds_imp_gaus(m1,m2,r1,r2,w11,tau11,p,D,alpha,sr):
+    l = np.pi
+    l2 = l*alpha
+    s11 = -1/tau11
+
+    sigma=np.zeros((m1,m2))
+    omega=np.zeros((m1,m2))
+    k=np.zeros((m1,m2))
+
+    x1 = l*r1
+    x2 = l2*r2
+
+
+    for i in range(m1):
+        for j in range(m2):
+            sigma[i,j] = getsigma(i+1,j+1,alpha,p,s11)
+            omega[i,j] = getomega(i+1,j+1,alpha,p, D,w11,s11)
+            k[i,j] = get_gaus_k(i+1,j+1,omega[i,j],get_gaus_f(i+1,1,300,r1),get_gaus_f(j+1,alpha,300,r2),x1,x2,l,alpha) # the covered striking length is 1
+
+    #sr = 44100
+    #print(omega,sigma,k)
+    dur = 2**16
+
+    y = []
+    for t in range(dur):
+        y.append(np.sum(np.sum(k * np.exp(sigma * t/sr) * np.sin(omega * t/sr))))
+    return y
+
 
 
