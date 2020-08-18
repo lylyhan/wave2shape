@@ -5,4 +5,4 @@ notebooks/*.wav
 notebooks/__pycache__/
 sbatch/07_train10trials/slurm/
 sbatch/05_compute-scattering/slurm/
-
+notebooks/.ipynb_checkpoints
