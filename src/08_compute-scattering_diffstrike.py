@@ -51,10 +51,14 @@ for i,sample_id in enumerate(sample_ids):
     #make sound, store as file
     wav_name = str(sample_id) + "_sound.wav"
     wav_path = os.path.join(data_dir, fold_str, wav_name)
-    omega,tau,p,D,alpha,r1,r2 = df.values[i,1:-1]
-    waveform = ftm_u_shape.getsounds_imp_gaus(mode,mode,r1,r2,omega,tau,p,D,alpha,sr)
-    #write file
-    sf.write(wav_path,waveform,sr)
+    #check if already made the file 
+    if os.path.exists(wav_path):
+        waveform,_ = librsoa.load(wav_path,sr=sr)
+    else:
+        omega,tau,p,D,alpha,r1,r2 = df.values[i,1:-1]
+        waveform = ftm_u_shape.getsounds_imp_gaus(mode,mode,r1,r2,omega,tau,p,D,alpha,sr)
+        #write file
+        sf.write(wav_path,waveform,sr)
     #compute scattering
     torch_waveform = torch.Tensor(waveform)
     Sx = np.array(scattering(torch_waveform).T)

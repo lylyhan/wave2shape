@@ -6,3 +6,4 @@ notebooks/__pycache__/
 sbatch/07_train10trials/slurm/
 sbatch/05_compute-scattering/slurm/
 notebooks/.*
+notebooks/*.pkl
