@@ -8,7 +8,8 @@ sys.path.append("../src")
 trials = [1,2,3,4,5,6,7,8,9,10]
 script_name = os.path.basename(__file__)
 script_path = os.path.join("..", "..", "..", "src", script_name)
-
+depths = [1,2,3]
+units = [8,16,32]
 
 # Create folder.
 sbatch_dir = os.path.join(script_name[:-3], "sbatch")
@@ -46,7 +47,11 @@ for trial in trials:
         f.write("\n")
         f.write("python /home/hh2263/wave2shape/src/06_train.py 8 2 3 "+str(trial)+"\n")
         f.write("python /home/hh2263/wave2shape/src/09_train_film.py 8 2 3 "+str(trial)+"\n")
- 
+        for d in depths:
+            for unit in units:
+                f.write("python /home/hh2263/wave2shape/src/09_train_film_deep.py 8 2 3 "+
+                    str(trial)+" "+str(d)+" "+str(unit)+"\n")
+
        
 
 

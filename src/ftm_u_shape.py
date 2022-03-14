@@ -19,7 +19,7 @@ def get_gaus_f(m,l,tau,r):
     #trapezoid rule to integrate f(x)sin(mpix) from 0 to l
     #(f(a)+f(b))*(b-a)/2
     integral = 0
-    x = approxnorm(l,l*r,0.4,tau)
+    x = approxnorm(l,l*r,0.1,tau)
     h = l/tau
     for i in range(tau):
         #x(i+2)

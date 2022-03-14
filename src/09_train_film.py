@@ -19,10 +19,10 @@ import random
 import os
 import librosa
 import pickle
-import matplotlib.pyplot as plt
 import math
 import sys
 
+tf.enable_eager_execution()
 
 # Parse input arguments.
 args = sys.argv[1:]
@@ -60,16 +60,16 @@ class FiLM(keras.layers.Layer):
 
         conv_output, FiLM_tns = x # x = [Sx,u]; [t by p, length-2]
 
-        FiLM_tns = K.dot(FilM_tns,self.kernel) # u -> [f(u),g(u)]
+        FiLM_tns = K.dot(FiLM_tns,self.kernel) # u -> [f(u),g(u)]
 
         #put [f(u),g(u)] in the fourth dimension
         FiLM_tns = K.expand_dims(FiLM_tns, axis=[1]) 
-        FiLM_tns = K.expand_dims(FiLM_tns, axis=[1]) #make it into [1, 1, 1,2p]
-        FiLM_tns = K.tile(FiLM_tns, [1, self.height, self.width, 1]) #[1,Sx.shape[0],Sx.shape[1],2p]
+        #FiLM_tns = K.expand_dims(FiLM_tns, axis=[1]) #make it into [1, 1, 1,2p]
+        FiLM_tns = K.tile(FiLM_tns, [1, self.height, 1]) #[1,Sx.shape[0],Sx.shape[1],2p]
         
         #extract f(u) and g(u)
-        gammas = FiLM_tns[:, :, :, :self.n_feature_maps] 
-        betas = FiLM_tns[:, :, :, self.n_feature_maps:]
+        gammas = FiLM_tns[:, :, :self.n_feature_maps] 
+        betas = FiLM_tns[:, :, self.n_feature_maps:]
         
         # Apply affine transformation
         return (1 + gammas) * conv_output + betas
@@ -155,18 +155,22 @@ pkl_dir = '/scratch/hh2263/drum_data_ver2/drumv2_sc-pkl/'
 #order = 2
 pickle_name = "_".join(
 	["scattering",
-	"fold-"+str(fold_str),"J-" + str(J).zfill(2), "Q-" + str(Q).zfill(2), "order" + str(order)]
+	"J-" + str(J).zfill(2), "Q-" + str(Q).zfill(2), "order" + str(order)]
 )
 
-pkl_path_train = os.path.join(pkl_dir,pickle_name+"_fold-train.pkl")
+pkl_half = "_".join(
+	["_J-" + str(J).zfill(2), "Q-" + str(Q).zfill(2), "order" + str(order)]
+)
+
+pkl_path_train = os.path.join(pkl_dir,"scattering_fold-train"+pkl_half+".pkl")
 pkl_train = open(pkl_path_train, 'rb')
 Sy_train,y_train = pickle.load(pkl_train) 
 
-pkl_path_val = os.path.join(pkl_dir,pickle_name+"_fold-val.pkl")
+pkl_path_val = os.path.join(pkl_dir,"scattering_fold-val"+pkl_half+".pkl")
 pkl_val = open(pkl_path_val,'rb')
 Sy_val,y_val = pickle.load(pkl_val)
 
-pkl_path_test = os.path.join(pkl_dir,pickle_name+"_fold-test.pkl")
+pkl_path_test = os.path.join(pkl_dir,"scattering_fold-test"+pkl_half+".pkl")
 pkl_test = open(pkl_path_test,'rb')
 Sy_test,y_test = pickle.load(pkl_test)
 
@@ -178,17 +182,23 @@ for idx in range(2,4):
 
 # normalization of the physical parameters
 scaler = MinMaxScaler()
-scaler.fit(y_train)
-y_train_normalized = scaler.transform(y_train)
-y_val_normalized = scaler.transform(y_val)
-y_test_normalized = scaler.transform(y_test)
+scaler.fit(y_train[:,:-2])
+y_train_normalized = scaler.transform(y_train[:,:-2])
+y_val_normalized = scaler.transform(y_val[:,:-2])
+y_test_normalized = scaler.transform(y_test[:,:-2])
 
 #log scale the input
 #eps = 1e-11
-Sy_train_log2 = np.log1p(((Sy_train>0)*Sy_train)/eps)
-Sy_val_log2 = np.log1p(((Sy_val>0)*Sy_val)/eps)
-Sy_test_log2 = np.log1p((Sy_test>0)*Sy_test/eps)
+Sy_train_log2 = np.asarray(np.log1p(((Sy_train>0)*Sy_train)/eps)).astype(np.float32)
+Sy_val_log2 = np.asarray(np.log1p(((Sy_val>0)*Sy_val)/eps)).astype(np.float32)
+Sy_test_log2 = np.asarray(np.log1p((Sy_test>0)*Sy_test/eps)).astype(np.float32)
 
+y_train_u = np.asarray(2*(y_train[:,-2:]-0.5)).astype(np.float32)
+y_train_theta = np.asarray(y_train_normalized).astype(np.float32)
+y_val_u = np.asarray(2*(y_val[:,-2:]-0.5)).astype(np.float32)
+y_val_theta = np.asarray(y_val_normalized).astype(np.float32)
+y_test_u = np.asarray(2*(y_test[:,-2:]-0.5)).astype(np.float32)
+y_test_theta = np.asarray(y_test_normalized).astype(np.float32)
 
 #train the model
 
@@ -214,19 +224,20 @@ print('Start fitting the model...')
 for epoch in range(30):
 	np.random.shuffle(idx)
 	Sy_temp = Sy_train_log2[idx[:m],:shape_time,:]
-	y_temp = y_train_normalized[idx[:m],:]
+	y_temp_theta = y_train_theta[idx[:m],:]
+	y_temp_u = y_train_u[idx[:m],:]
 
-	hist = model_adjustable.fit(Sy_temp,
-				y_temp,
+	hist = model_adjustable.fit([Sy_temp,y_temp_u],
+				y_temp_theta,
 				epochs=1,
 				verbose=2,
 				batch_size=bs,
-				validation_data = (Sy_val_log2[:,-shape_time:,:],y_val_normalized),
+				validation_data = ([Sy_val_log2[:,-shape_time:,:],y_val_u],y_val_theta),
 				use_multiprocessing=False)
 
 	validation_loss = hist.history['val_loss'][0]
 
-	test_loss.append(model_adjustable.evaluate(Sy_test_log2,y_test_normalized)[0])
+	test_loss.append(model_adjustable.evaluate([Sy_test_log2,y_test_u],y_test_theta)[0])
 	val_loss.append(validation_loss)
 	train_loss.append(hist.history['loss'][0])
 

@@ -1,5 +1,5 @@
 import numpy as np
-
+import scipy.signal as signal
 
 #get omega, sigma, K
 def getsigma(m1,m2,alpha,p,s11):        
@@ -21,12 +21,19 @@ def getk(m1,m2,omega,f1,f2):
     return k
 
 #calculate integral and approximate excitation function with gaussian distribution
-def getf(m,l,tau):
+def getf(m,l,tau,mode='gaus'): #calculate the f_m which takes spatial component of excitation.
     #trapezoid rule to integrate f(x)sin(mpix) from 0 to l
     #(f(a)+f(b))*(b-a)/2
     integral = 0
-    x = approxnorm(l,l/2,0.4,tau)
     h = l/tau
+    if mode == "gaus":
+        x = approxnorm(l,l/2,0.4,tau) #f(x)
+    elif mode == "tri":
+        x = np.arange(0,tau+1,1)*h
+        x = np.minimum(2-2/l*x,2*x/l)
+    elif mode == "random":
+        x = np.random.rand(tau+1)
+
     for i in range(tau):
         #x(i+2)
         #print(x.shape,x[0],x[0,1])
@@ -34,10 +41,8 @@ def getf(m,l,tau):
     integral = integral*2/l
     return integral
 
-def get_impf(m,l,tau):
-    return np.sin(m/2)*2/l
 
-def approxnorm(l,mu,s,tau):
+def approxnorm(l,mu,s,tau): #normal distribution simulating fx 
     h = l/tau
     #x = np.zeros((1,tau + 1))
     x = []
@@ -46,7 +51,7 @@ def approxnorm(l,mu,s,tau):
         x.append(1/(s * np.sqrt(2*np.pi)) * np.exp(-0.5 * (i * h - mu)**2/s**2))
     return x
 
-def getsounds_imp(m1,m2,w11,tau11,p,D,alpha,sr):
+def getsounds_imp(m1,m2,w11,tau11,p,D,alpha,sr,mode_t,mode_x):
     l = np.pi
     s11 = -1/tau11
 
@@ -62,17 +67,37 @@ def getsounds_imp(m1,m2,w11,tau11,p,D,alpha,sr):
         for j in range(m2):
             sigma[i,j] = getsigma(i+1,j+1,alpha,p,s11)
             omega[i,j] = getomega(i+1,j+1,alpha,p, D,w11,s11)
-            k[i,j] = getk(i+1,j+1,omega[i,j],getf(i+1,1,300),getf(j+1,alpha,300))
+            k[i,j] = getk(i+1,j+1,omega[i,j],getf(i+1,1,300,mode_x),getf(j+1,alpha,300,mode_x))
             #k[i,j] = get_del_k(i+1,j+1,omega[i,j],x1,x2,l,alpha)
 
             #print(get_impf(i+1,1,300),getf(i+1,1,300))
     #sr = 44100
     #print(omega,sigma,k)
     dur = 2**16
+    #convolve time component of excitation with omega
+    excit_dur = 3e-3*sr #3ms of excitation
+    d_time = np.arange(0,excit_dur,1) 
+    if mode_t == "tri":       
+        d_time = 1-d_time/excit_dur #triangular time excitation
+    elif mode_t == "del":
+        d_time = 0*d_time
+        d_time[0] = 1.0
+    elif mode_t == "inv":
+        param=40
+        b = param/excit_dur
+        a = param + param**2/excit_dur
+        d_time = a/(d_time+param)-b
+    elif mode_t == "line":
+        d_time = 0*d_time+1
+    elif mode_t == "random":
+        d_time = np.random.rand(len(d_time))
+    
 
     y = []
-    for t in range(dur):
+    for t in range(dur): #assumed time component of excitation is a delta function.
         y.append(np.sum(np.sum(k * np.exp(sigma * t/sr) * np.sin(omega * t/sr))))
+    y = signal.convolve(y,d_time,mode='same') #correct 
+    
     return y
 
 def getsounds_dif(m1,m2,w11,tau11,p,D,alpha,sr):
@@ -116,6 +141,46 @@ def getsounds_dif(m1,m2,w11,tau11,p,D,alpha,sr):
         y_1 = ytemp
             
     return y_iii
+
+
+def getsounds_dif_nonlinear(m,w11,tau11,p,D,sr):
+
+    l0 = 1
+    mu = np.linspace(0,m) #(0,1,2,..,m-1)
+
+    n = -(mu*math.pi/l0)**2
+    K = sin(mu*math.pi*x/l0)
+    beta = E*I*(mu*math.pi/l0)**4 + T0*(mu*math.pi/l0)**2
+    alpha = (d1+d3*n**2)/2/rho/A
+    omega = beta/rho/A - ((d1+d3*n**2)/2/rho/A)**2
+    gamma = n*2*(E*A*math.pi**2/l0**4)*(T*np.sin(omega*tau)/rho/A/omega)
+
+    c0 = -np.exp(-2*alpha*Ts)
+    c1 = 2*np.exp(-alpha*Ts)*np.cos(omega*Ts)
+    a1 = 1
+    a0 = np.exp(-alpha*Ts)*(np.cos(omega*Ts)+(d1*d3+d3*n**2)/2/omega*np.sin(omega*Ts))
+
+
+
+
+    dur = 2**16
+    y_1 = np.zeros((m1,m2))
+    y_2 = np.zeros((m1,m2))
+    x_1 = 0.0
+    x_0 = 1
+    y_iii = []
+    summed=0
+    node2=0
+    for n in range(sr):
+        
+        node1 = c0*Ts+c1*node2+a0*yi+gamma*summed
+        node2 = node1*Ts+a1*yi
+        summed = np.sum(m*node2)
+        y_iii.append(node2*K/N)
+
+            
+    return y_iii
+
 
 def getsounds_bil(m1,m2,w11,tau11,p,D,alpha,sr):
     l = np.pi
