@@ -1,3 +1,7 @@
+"""
+This script contains Ivan's FTM impulse drum model implemented with Gaussian enveloped spatial excitation
+and delta excitation in time, strike position is customizable.
+"""
 import numpy as np
 
 
